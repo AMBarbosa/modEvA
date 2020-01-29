@@ -1,0 +1,19 @@
+citHeader("To cite modEvA in publications use:")
+
+citEntry(entry = "Article",
+  title        = "New measures for assessing model equilibrium and prediction mismatch in species distribution models",
+  author       = personList(as.person("A. Marcia Barbosa"), as.person("Raimundo Real"), as.person("A. Roman Munoz"), as.person("Jennifer A. Brown")),
+  journal      = "Diversity and Distributions",
+  year         = "2013",
+  volume       = "19",
+  number       = "10",
+  pages        = "1333--1338",
+  url          = "https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.12100",
+
+  textVersion  =
+  paste("Barbosa, A.M., Real, R., Munoz, A.R. & Brown, J.A. (2015).",
+        "New measures for assessing model equilibrium and prediction mismatch in species distribution models.",
+        "Diversity and Distributions, 19(10), 1333-1338.",
+        "URL https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.12100.")
+)
+

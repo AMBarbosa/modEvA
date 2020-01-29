@@ -1,0 +1,7 @@
+exportPattern("^[[:alpha:]]+")
+importFrom("graphics", "abline", "barplot", "hist", "legend", "lines", "mtext", "par",
+           "plot", "points", "polygon", "rect", "text")
+importFrom("stats", "approx", "approxfun", "binomial", "complete.cases", "cor", "density", "family",
+           "glm", "integrate", "logLik", "median", "na.omit", "pchisq", "qf",
+           "quantile", "resid", "xtabs")
+
