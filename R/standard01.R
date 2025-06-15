@@ -6,10 +6,10 @@ function(score, direction = c("-1+1to01", "01to-1+1")) {
   direction <- match.arg(direction, c("-1+1to01", "01to-1+1"))
   
   if (direction == "-1+1to01") {
-    if (score < -1 | score > 1) stop("'score' must be between -1 and 1")
+    if (is.finite(score) && (score < -1 || score > 1)) stop("'score' must be between -1 and 1")
     std.score <- score + ((1 - score) / 2)
   } else {
-    if (score < 0 | score > 1) stop("'score' must be between 0 and 1 to standardize in this direction")
+    if (is.finite(score) && (score < 0 || score > 1)) stop("'score' must be between 0 and 1 to standardize in this direction")
     std.score <- 2 * (score - 0.5)
   }
   

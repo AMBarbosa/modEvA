@@ -18,7 +18,7 @@ a model object of class 'lm' or glm'.
 the type of equation to get; can be either "Y" (the default, for the linear model equation), "P" (for probabiity) or "F" (for favourability).
 }
   \item{digits}{
-the number of digits to which to round the coefficient estimates in the equation.
+the number of significant digits to which to round the coefficient estimates in the equation.
 }
   \item{prefix}{
 the prefix to add to each variable name in the equation.
@@ -30,12 +30,12 @@ the suffix to add to each variable name in the equation.
 \details{
 The summary of a model in R gives you a table of the coefficient estimates and other parameters. Sometimes it may be useful to have a string of text with the model's equation, so that you can present it in an article (e.g. Real et al. 2005) or apply it in a (raster map) calculation, either in R (although here you can usually use the 'predict' function for this) or in a GIS software (e.g. Barbosa et al. 2010). The \code{getModEqn} function gets this equation for linear or generalized linear models.
 
-By default it prints the \code{"Y"} linear equation, but for generalized linear models you can also set \code{type = "P"} (for the equation of probability) or \code{type = "F"} (for favourability, which corrects the intercept to eliminate the effect of prevalence - see Real et al. 2006).
+By default it prints the \code{"Y"} linear equation, but for generalized linear models you can also set \code{type = "P"} (for the equation of probability) or \code{type = "F"} (for favourability, which modifies the intercept to eliminate the effect of modelled prevalence - see Real et al. 2006).
 
-If the variables to which you want to apply the model have a prefix or suffix (e.g. prefix = "raster.stack$" for the R raster package, or prefix = "mydata$" for a data frame, or suffix = "@1" in Quantum GIS, or suffix = "@mapset" in GRASS), you can get these in the equation too, using the \code{prefix} and/or the \code{suffix} argument.
+If the variables to which you want to apply the model have a prefix or suffix (e.g. something like prefix = "raster.stack$" for the R 'raster' or 'terra' package, or prefix = "mydata$" for a data frame, or suffix = "@1" in QGIS, or suffix = "@mapset" in GRASS), you can get these in the equation too, using the \code{prefix} and/or the \code{suffix} argument.
 }
 \value{
-A charachter string of model the equation.
+A charachter string of the model equation.
 }
 \references{
 Barbosa A.M., Real R. & Vargas J.M. (2010) Use of coarse-resolution models of species' distributions to guide local conservation inferences. Conservation Biology 24: 1378-87

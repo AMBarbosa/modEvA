@@ -1,36 +1,16 @@
-MillerCalib <- function(model = NULL, obs = NULL, pred = NULL, plot = TRUE, line.col = "black", diag = TRUE, diag.col = "grey", plot.values = TRUE, digits = 2, xlab = "", ylab = "", main = "Miller calibration", ...) {
-  # version 1.4 (7 Oct 2018)
+MillerCalib <- function(model = NULL, obs = NULL, pred = NULL, plot = TRUE, line.col = "darkblue", diag = TRUE, diag.col = "lightblue3", plot.values = TRUE, digits = 2, xlab = "", ylab = "", main = "Miller calibration", na.rm = TRUE, rm.dup = FALSE, verbosity = 2, ...) {
+  # version 2.0 (18 Dec 2024)
 
-  model.provided <- ifelse(is.null(model), FALSE, TRUE)
-
-  if (model.provided) {
-    if(!("glm" %in% class(model) && model$family$family == "binomial" && model$family$link == "logit")) stop ("'model' must be an object of class 'glm' with 'binomial' family and 'logit' link.")
-    if (!is.null(pred)) message("Argument 'pred' ignored in favour of 'model'.")
-    if (!is.null(obs)) message("Argument 'obs' ignored in favour of 'model'.")
-    obs <- model$y
-    pred <- model$fitted.values
-
-  } else { # if model not provided
-
-    if (is.null(obs) | is.null(pred))  stop ("You must provide either 'obs' and 'pred', or a 'model' object of class 'glm'.")
-    if (length(obs) != length(pred))  stop ("'obs' and 'pred' must have the same number of values (and in the same order).")
-    # new (15 Sep 2015):
-    dat <- data.frame(obs, pred)
-    n.in <- nrow(dat)
-    dat <- na.omit(dat)
-    n.out <- nrow(dat)
-    if (n.out < n.in)  warning (n.in - n.out, " observations removed due to missing data; ", n.out, " observations actually evaluated.")
-    obs <- dat$obs
-    pred <- dat$pred
-  }
+  obspred <- inputMunch(model, obs, pred, na.rm = na.rm, rm.dup = rm.dup, verbosity = verbosity)
+  obs <- obspred[ , "obs"]
+  pred <- obspred[ , "pred"]
 
   stopifnot(
-    length(obs) == length(pred),
-    obs %in% c(0,1)#,
+    obs %in% c(0, 1)#,
     #pred >= 0,
     #pred <= 1
   )
-  # new:
+
   if (any(pred < 0) | any(pred > 1)) warning("Some of your predicted values are outside the [0, 1] interval; are you sure these represent probabilities?")
 
   pred[pred == 0] <- 2e-16  # avoid NaN in log below
@@ -50,15 +30,17 @@ MillerCalib <- function(model = NULL, obs = NULL, pred = NULL, plot = TRUE, line
     ymin <- min(0, intercept)
     ymax <- max(1, intercept + 0.3)
     plot(c(0, 1), c(ymin, ymax), type = "n", xlab = xlab, ylab = ylab, main = main, ...)
-    if (diag) abline(0, 1, col = diag.col, lty = 2)
-    abline(intercept, slope, col = line.col)
+    if (diag) abline(0, 1, lty = 2, col = diag.col)
+    abline(intercept, slope, lwd = 2, col = line.col)
     if (plot.values) {
-      #plotext <- paste("intercept =" , round(intercept, digits), "\nslope =", round(slope, digits), "\nslope p-value =", round(slope.p, digits))
-      plotext <- paste0("intercept = " , round(intercept, digits), "\nslope = ", round(slope, digits))
-      text(x = 1, y = ymin + 0.1 * (ymax - ymin), adj = 1, labels = plotext)
+      # plotext <- paste0("slope = " , round(slope, digits), "\n(intercept = ", round(intercept, digits), ")")
+      # text(x = 1, y = ymin + 0.15 * (ymax - ymin), adj = 1, labels = plotext)
+      text(x = 1, y = ymin + 0.175 * (ymax - ymin), adj = 1, labels = paste0("slope = " , round(slope, digits)))
+      text(x = 1, y = ymin + 0.115 * (ymax - ymin), adj = 1, labels = paste0("slope - 1 = ", round(slope - 1, digits)), col = "pink3", cex = 0.9)
+      text(x = 1, y = ymin + 0.05 * (ymax - ymin), adj = 1, labels = paste0("intercept = ", round(intercept, digits)), col = "darkgrey", cex = 0.9)
     }  # end if plot.values
   }  # end if plot
 
-  #return(list(intercept = intercept, slope = slope, slope.pvalue = slope.p))
+  # return(list(intercept = intercept, slope = slope, slope.pvalue = slope.p))
   list(intercept = intercept, slope = slope)
 }  # end MillerCalib function

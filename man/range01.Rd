@@ -4,7 +4,7 @@
 Shrink or stretch a vector to make it range between 0 and 1
 }
 \description{
-This function re-scales a numeric vector so that it ranges between 0 and 1 (i.e., the lowest value becomes 0, the highest becomes 1, and the ones in the middle retain their rank and relative diference).
+This function re-scales a numeric vector so that it ranges between 0 and 1. So, the lowest value becomes 0, the highest becomes 1, and the ones in the middle retain their rank and relative diference.
 }
 \usage{
 range01(x, na.rm = TRUE)

@@ -1,9 +1,20 @@
-prevalence <-
-function (obs, event = 1, na.rm = TRUE) {
-  # version 1.0
-  # calculates the prevalence (proportion of occurrences) of a value (event) in a vector
-  # obs: a vector of binary observations (e.g. 1 vs. 0, male vs. female, disease vs. no disease, etc.)
-  # event: the value whose prevalence we want to calculate (e.g. 1, "present", etc.)
+prevalence <- function (obs = NULL, model = NULL, event = 1, na.rm = TRUE) {
+  # version 1.4 (2 May 2022)
+
+  #model_classes_implemented <- c("glm", "gam", "gbm", "randomForest", "bart")
+  #if (any(class(obs) %in% model_classes_implemented))  model <- obs  # (in case the user provides unnamed model argument)
+  
+  if (!is.null(obs)) {
+    obs <- unlist(obs)
+    if (!is(obs, "vector") && !is(obs, "factor")) stop("'obs' must be of class 'vector' or 'factor'.")
+      if (!(event %in% obs)) warning("'event' is not among of the values of 'obs'.")
+  }
+    
+  if (!is.null(model)) {
+    if (!is.null(obs)) warning("Argument 'obs' ignored in favour of 'model'.")
+    obs <- mod2obspred(model, obs.only = TRUE)[ , "obs"]
+  }  # end if model
+  
   if(na.rm) obs <- obs[!is.na(obs)]
   sum(obs == event) / length(obs)
 }

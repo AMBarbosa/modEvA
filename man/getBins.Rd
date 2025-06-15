@@ -10,40 +10,23 @@ Get continuous predicted values into bins according to specific criteria.
 getBins(model = NULL, obs = NULL, pred = NULL, id = NULL, 
 bin.method, n.bins = 10, fixed.bin.size = FALSE, min.bin.size = 15,
 min.prob.interval = 0.1, quantile.type = 7, simplif = FALSE,
-verbosity = 2)
+verbosity = 2, na.rm = TRUE, rm.dup = FALSE)
 }
 \arguments{
-  \item{model}{a model object of class \code{"glm"}.
-}
-  \item{obs}{
-a vector of 1-0 values of a modelled binary variable. This argument is ignored if \code{model} is provided.
-}
-  \item{pred}{
-a vector of the corresponding predicted values. This argument is ignored if \code{model} is provided.
-  }
-  \item{id}{
-optional vector of row identifiers; must be of the same length and in the same order of \code{obs} and \code{pred} (or of the cases used to build \code{model})
-}
-  \item{bin.method}{
-the method with which to divide the values into bins. Type modEvAmethods("getBins") for available options and see Details for more information on these methods.
-}
-  \item{n.bins}{
-the number of bins in which to divide the data.
-}
-  \item{fixed.bin.size}{
-logical, whether all bins should have (approximally) the same size.
-}
-  \item{min.bin.size}{
-integer value defining the minimum number of observations to include in each bin. The default is 15, the minimum required for accurate comparisons within bins (Jovani & Tella 2006, Jimenez-Valverde et al. 2013).
-}
-  \item{min.prob.interval}{
-minimum range of probability values in each bin. The default is 0.1.
-}
-  \item{quantile.type}{
-argument to pass to \code{\link{quantile}} specifying the algorithm to use if bin.method = "quantiles". The default is 7 (the \code{\link{quantile}} default in R), but check out other types, e.g. 3 (used by SAS), 6 (used by Minitab and SPSS) or 5 (appropriate for deciles, which correspond to the default n.bins = 10).
-}
+  \item{model}{a binary-response model object of class "glm", "gam", "gbm", "randomForest" or "bart". If this argument is provided, 'obs' and 'pred' will be extracted with \code{\link{mod2obspred}}. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
+  \item{obs}{alternatively to 'model' and together with 'pred', a numeric vector of observed presences (1) and absences (0) of a binary response variable. Alternatively (and if 'pred' is a 'SpatRaster'), a two-column matrix or data frame containing, respectively, the x (longitude) and y (latitude) coordinates of the presence points, in which case the 'obs' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
+  \item{pred}{alternatively to 'model' and together with 'obs', a vector with the corresponding predicted values of presence probability, habitat suitability, environmental favourability or alike. Must be of the same length and in the same order as 'obs'. Alternatively (and if 'obs' is a set of point coordinates), a 'SpatRaster' map of the predicted values for the entire evaluation region, in which case the 'pred' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
+  \item{id}{optional vector of row identifiers; must be of the same length and in the same order of \code{obs} and \code{pred} (or of the cases used to build \code{model})}
+  \item{bin.method}{the method with which to divide the values into bins. Type modEvAmethods("getBins") for available options and see Details for more information on these methods.}
+  \item{n.bins}{the number of bins in which to divide the data.}
+  \item{fixed.bin.size}{logical, whether all bins should have (approximally) the same size.}
+  \item{min.bin.size}{integer value defining the minimum number of observations to include in each bin. The default is 15, the minimum required for accurate comparisons within bins (Jovani & Tella 2006, Jimenez-Valverde et al. 2013).}
+  \item{min.prob.interval}{minimum range of probability values in each bin. The default is 0.1.}
+  \item{quantile.type}{argument to pass to \code{\link{quantile}} specifying the algorithm to use if bin.method = "quantiles". The default is 7 (the \code{\link{quantile}} default in R), but check out other types, e.g. 3 (used by SAS), 6 (used by Minitab and SPSS) or 5 (appropriate for deciles, which correspond to the default n.bins = 10).}
   \item{simplif}{logical, whether to calculate a faster, simplified version (used internally in other functions). The default is FALSE.}
   \item{verbosity}{integer specifying the amount of messages or warnings to display. Defaults to the maximum implemented; lower numbers (down to 0) decrease the number of messages.}
+  \item{na.rm}{logical argument indicating whether to remove (with a warning saying how many) rows with NA in any of the 'obs' or 'pred' values. The default is TRUE, as some 'bin.method' options will fail if there are NAs.}
+    \item{rm.dup}{If \code{TRUE} and if 'pred' is a SpatRaster and if there are repeated points within the same pixel, a maximum of one point per pixel is used to compute the presences. See examples in \code{\link{ptsrast2obspred}}. The default is FALSE.}
 }
 \details{
 Mind that different \code{bin.method}s can lead to visibly different results regarding the bins and any operations that depend on them (such as \code{\link{HLfit}}). Currently available \code{bin.method}s are:

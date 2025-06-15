@@ -1,23 +1,29 @@
-plotGLM <-
-function(model = NULL, obs = NULL, pred = NULL, link = "logit",
+plotGLM <- function(model = NULL, obs = NULL, pred = NULL, link = "logit",
          plot.values = TRUE, plot.digits = 3, xlab = "Logit (Y)",
-         ylab = "Predicted probability", main = "Model plot", ...) {
-  # version 2.0 (03 Jan 2020)
+         ylab = "Predicted probability", main = "Model plot",
+         na.rm = TRUE, rm.dup = FALSE, verbosity = 2, ...) {
+  # version 2.2 (6 May 2022)
 
   model.provided <- ifelse(is.null(model), FALSE, TRUE)
 
-  if (model.provided) {
-    if(!("glm" %in% class(model) && model$family$family == "binomial" && model$family$link == "logit")) stop ("'model' must be an object of class 'glm' with 'binomial' family and 'logit' link.")
-    if (!is.null(pred)) message("Argument 'pred' ignored in favour of 'model'.")
-    if (!is.null(obs)) message("Argument 'obs' ignored in favour of 'model'.")
-    obs <- model$y
-    pred <- model$fitted.values
-  }  else { # if model not provided
-    if (is.null(obs) | is.null(pred)) stop("You must provide either 'obs' and 'pred', or a 'model' object of class 'glm'")
-  }  # end if model
+  # if (model.provided) {
+  #   if(!("glm" %in% class(model) && model$family$family == "binomial" && model$family$link == "logit")) stop ("'model' must be an object of class 'glm' with 'binomial' family and 'logit' link.")
+  #   if (!is.null(pred)) message("Argument 'pred' ignored in favour of 'model'.")
+  #   if (!is.null(obs)) message("Argument 'obs' ignored in favour of 'model'.")
+  #   obs <- model$y
+  #   pred <- model$fitted.values
+  #   
+  # } else { # if model not provided
+  #   
+  #   if (is.null(obs) | is.null(pred)) stop("You must provide either 'obs' and 'pred', or a 'model' object of class 'glm'")
+  # }  # end if model
+  
+  obspred <- inputMunch(model, obs, pred, na.rm = na.rm, rm.dup = rm.dup, verbosity = verbosity)  
+  obs <- obspred[ , "obs"]
+  pred <- obspred[ , "pred"]
   
   stopifnot(
-    length(obs) == length(pred),
+    #length(obs) == length(pred),
     obs %in% c(0, 1)#,
     #pred >= 0,
     #pred <= 1
@@ -40,7 +46,7 @@ function(model = NULL, obs = NULL, pred = NULL, link = "logit",
 
   if (plot.values) {
     Dsq <- round(Dsquared(model = model, adjust = FALSE), plot.digits)
-    Rsq <- RsqGLM(model = model)
+    Rsq <- RsqGLM(model = model, plot = FALSE)
     CoxSnell <- round(Rsq$CoxSnell, plot.digits)
     McFadden <- round(Rsq$McFadden, plot.digits)
     Nagelkerke <- round(Rsq$Nagelkerke, plot.digits)

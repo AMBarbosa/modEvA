@@ -10,8 +10,8 @@ The modEvA package can analyse species distribution models and evaluate their pe
 \tabular{ll}{
 Package: \tab modEvA\cr
 Type: \tab Package\cr
-Version: \tab 2.0\cr
-Date: \tab 2020-01-21 \cr 
+Version: \tab 3.36\cr
+Date: \tab 2025-06-09\cr
 License: \tab GPL-3\cr
 }
 }
@@ -25,7 +25,7 @@ Barbosa A.M., Real R., Munoz A.R. & Brown J.A. (2013) New measures for assessing
 }
 \keyword{ package }
 \seealso{
-\pkg{PresenceAbsence}, \pkg{ROCR}, \pkg{verification}
+\pkg{PresenceAbsence}, \pkg{ROCR}, \pkg{verification}, \pkg{Metrics}
 }
 \examples{
 # load sample models:
@@ -37,6 +37,12 @@ mod <- rotif.mods$models[[1]]
 # plot this model:
 plotGLM(model = mod)
 
+# compute the Root Mean Square Error of the model:
+RMSE(model = mod)
+
+# extract variable importance from the model:
+varImp(model = mod)
+
 # calculate the area under the ROC curve for the model:
 AUC(model = mod)
 
@@ -45,20 +51,21 @@ threshMeasures(model = mod, thresh = 0.5)
 threshMeasures(model = mod, thresh = "preval")
 
 # calculate optimal thresholds based on several criteria:
-optiThresh(model = mod, measures = c("CCR", "Sensitivity", "kappa", "TSS"), 
-ylim = c(0, 1))
+optiThresh(model = mod, measures = c("CCR", "Sensitivity", "kappa", "TSS"),
+ylim = c(0, 1), pch = 20, cex = 0.5)
 
 # calculate the optimal threshold balancing two evaluation measures:
 optiPair(model = mod, measures = c("Sensitivity", "Specificity"))
 
-# calculate the explained deviance, Hosmer-Lemeshow goodness-of-fit,
+# calculate the Boyce index, explained deviance, Hosmer-Lemeshow goodness-of-fit,
 # Miller's calibration stats, and (pseudo) R-squared values for the model:
+Boyce(model = mod)
 Dsquared(model = mod)
 HLfit(model = mod, bin.method = "quantiles")
 MillerCalib(model = mod)
 RsqGLM(model = mod)
 
 # calculate a bunch of evaluation measures for a set of models:
-multModEv(models = rotif.mods$models[1:4], thresh = "preval", 
+multModEv(models = rotif.mods$models[1:4], thresh = "preval",
 bin.method = "quantiles")
 }

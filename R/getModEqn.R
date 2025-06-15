@@ -1,6 +1,6 @@
 getModEqn <-
 function(model, type = "Y", digits = NULL, prefix = NULL, suffix = NULL) {
-  # version 1.6 (14 Aug 2013)
+  # version 1.7 (4 Apr 2022)
 
   stopifnot(class(model) %in% c("lm", "glm"))
   
@@ -14,13 +14,13 @@ function(model, type = "Y", digits = NULL, prefix = NULL, suffix = NULL) {
     message("'F' is currently only applicable to models with an intercept, so type was set to 'P'")
     type <- "P"
   }
-  if(type == "F") {
+  if (type == "F") {
     n1 <- sum(model$y == 1)
     n0 <- sum(model$y == 0)
     coeffs["(Intercept)"] <- coeffs["(Intercept)"] - log(n1/n0)
   }
   names(coeffs) <- paste(prefix, names(coeffs), suffix, sep = "")
-  if (!is.null(digits)) coeffs <- round(coeffs, digits)
+  if (!is.null(digits)) coeffs <- signif(coeffs, digits)  # was previously 'round'
   coeffs <- ifelse(coeffs < 0, coeffs, paste("+", coeffs, sep = ""))
   multips <- paste(coeffs, names(coeffs), sep = "*")
   multips <- sub(x = multips, pattern = paste(prefix, "*(Intercept)", suffix, sep = ""), replacement = "", fixed = TRUE)
