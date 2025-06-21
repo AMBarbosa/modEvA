@@ -22,9 +22,9 @@ quantReclass <- function(pred, # numeric vector, RasterLayer or SpatRaster
   from <- c(0, to[-length(to)])
   reclass_matrix <- as.matrix(cbind(from, to, probs))
 
-  if (is(pred, "SpatRaster")) result <- terra::classify(pred, reclass_matrix)
-  # else if (is(pred, "RasterLayer")) result <- raster::reclassify(pred, reclass_matrix)  # implied declaring more imports; unnecessary
-  else if (is(pred, "numeric")) result <- reclass(pred, reclass_matrix)
+  if (inherits(pred, "SpatRaster")) result <- terra::classify(pred, reclass_matrix)
+  # else if (inherits(pred, "RasterLayer")) result <- raster::reclassify(pred, reclass_matrix)  # implied declaring more imports; unnecessary
+  else if (inherits(pred, "numeric")) result <- reclass(pred, reclass_matrix)
 
   return(result)
 }

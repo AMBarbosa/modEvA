@@ -8,9 +8,6 @@ importFrom("graphics",
 importFrom("grDevices",
            "adjustcolor", "rgb")
 
-importFrom("methods",
-           "is")
-
 importFrom("stats",
            "aggregate", "approx", "approxfun", "as.formula", "binomial",
            "complete.cases", "cor", "density", "family", "glm", "integrate",

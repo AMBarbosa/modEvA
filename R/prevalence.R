@@ -6,7 +6,8 @@ prevalence <- function (obs = NULL, model = NULL, event = 1, na.rm = TRUE) {
   
   if (!is.null(obs)) {
     obs <- unlist(obs)
-    if (!is(obs, "vector") && !is(obs, "factor")) stop("'obs' must be of class 'vector' or 'factor'.")
+    # if (!is(obs, "vector") && !is(obs, "factor")) stop("'obs' must be of class 'vector' or 'factor'.")
+    if (!is.vector(obs) && !is.factor(obs)) stop("'obs' must be a 'vector' or 'factor'.")
       if (!(event %in% obs)) warning("'event' is not among of the values of 'obs'.")
   }
     

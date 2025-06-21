@@ -1,3 +1,31 @@
+# Version 3.37
+## (Committed 2025-06-21)
+
+### Modified functions:
+
+* varImp
+    - replaced instances of methods::is() with inherits()
+    - check if class 'Gam' or 'gam', in which case 'imp.type' automatically set to 'permutation' (as 'maxnet' already did)
+    - warning (not just message if verbosity) when 'imp.type' automatically changed
+    - changed 'col' argument defaults to named colours
+    - help file mentions 'Gam' and 'gam' classes also implemented
+
+* mod2obspred
+    - replaced instances of methods::is() with inherits()
+
+* prevalence
+    - replaced  if (!is(obs, "vector") && !is(obs, "factor"))  with  if (!is.vector(obs) && !is.factor(obs))  to remove dependency on {methods}
+
+
+### Other modified files:
+
+* NAMESPACE
+    - removed importFrom("methods", "is")
+
+* DESCRIPTION
+    - removed "methods" from Imports 
+
+
 # Version 3.36
 ## (Committed 2025-06-09)
 
@@ -7,7 +35,7 @@
     - renamed to pseudoRsq
 
 * MillerCalib
-    - changed colour of slope-1 value on plot, from red (too dramatic) to pink3
+    - changed colour of slope-1 value on plot, from red (too dramatic) to dark red
     - moved slope-1 value on plot to just after slope, before intercept
 
 * optiThresh

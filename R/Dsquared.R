@@ -18,7 +18,7 @@ Dsquared <- function(model = NULL,
   model.provided <- ifelse(is.null(model), FALSE, TRUE)
 
   if (model.provided) {
-    if (is(model, "glm")) family <- family(model)$family
+    if (inherits(model, "glm")) family <- family(model)$family
   }
 
   if (is.null(family)) {
@@ -97,7 +97,7 @@ Dsquared <- function(model = NULL,
   Dsq <- (null.deviance - deviance) / null.deviance
 
   if (adjust) {
-    if (model.provided && is(model, "glm")) {
+    if (model.provided && inherits(model, "glm")) {
       n <- length(model$y)
       #p <- length(model$coefficients)
       p <- attributes(logLik(model))$df

@@ -2,17 +2,17 @@
 \alias{varImp}
 \title{Variable importance.}
 \description{
-This function computes, and optionally plots, variable importance for an input model object of an implemented class. Note that "importance" is a vague concept which can be measured in different ways (see Details).
+This function computes, and optionally plots, variable importance for an input model object of an implemented class. Note that "importance" is a vague concept which can be measured in different ways, and not all importance type options are available for all model classes (see Arguments and Details).
 }
 \usage{
   varImp(model, imp.type = "each", relative = TRUE, reorder = TRUE,
   group.cats = FALSE, n.per = 10, data = NULL, n.trees = 100, plot = TRUE, 
   plot.type = "lollipop", error.bars = "sd", ylim = "auto0", 
-  col = c("#4477aa", "#ee6677"), plot.points = TRUE, legend = TRUE, grid = TRUE, 
-  verbosity = 2, ...)
+  col = c("steelblue4", "coral2"), plot.points = TRUE, legend = TRUE, 
+  grid = TRUE, verbosity = 2, ...)
 }
 \arguments{
-  \item{model}{a (binary-response) model object of class "glm" (of package \pkg{stats}), "gbm" (of package \pkg{gbm}), "GBMFit" (of package \pkg{gbm3}), "randomForest" (of package \pkg{randomForest}), "maxnet" (of package \pkg{maxnet}), "bart" (of package \pkg{dbarts}), "pbart" or "lbart" (of package \pkg{BART}), or a list produced by function "flexBART" or "probit_flexBART" of package \pkg{flexBART}.}
+  \item{model}{a (binary-response) model object of class "glm" (of package \pkg{stats}), "Gam" (of package \pkg{gam}), "gam" (of package \pkg{mgcv}), "gbm" (of package \pkg{gbm}), "GBMFit" (of package \pkg{gbm3}), "randomForest" (of package \pkg{randomForest}), "maxnet" (of package \pkg{maxnet}), "bart" (of package \pkg{dbarts}), "pbart" or "lbart" (of package \pkg{BART}), or a list produced by function "flexBART" or "probit_flexBART" of package \pkg{flexBART}.}
   \item{imp.type}{character value indicating the type of variable importance to compute, i.e. the metric with which importance is measured. Partial argument matching is used. Implemented options are:
   \itemize{
     \item "each" (the default), to extract the measure provided by each model object or summary (note that this is different across model classes -- see Details)
@@ -21,9 +21,9 @@ This function computes, and optionally plots, variable importance for an input m
   }
   \item{relative}{logical value (default TRUE) indicating whether to divide the absolute importance values by their total sum, to get a measure of relative variable importance ranging from 0 to 1. Applies when imp.type="permutation", or to GLM and BART models when imp.type="each".}
   \item{reorder}{logical value indicating whether to sort the variables in decreasing order of importance. The default is TRUE. If set to FALSE, the variables retain their input order.}
-  \item{group.cats}{logical value indicating whether to aggregate all factor levels of each (one-hot encoded) categorical variable into a single variable, by summing up their proportions of branches used. Used if 'model' is of class 'bart', 'pbart' or 'lbart', in whose outputs the contributions of categorical variables are split by their factor levels. The default is FALSE. Note that this may incorrectly group variables that have the same name with a different numeric suffix (e.g. "soil_type_1", "soil_type_2"), so revise your results if you set this to TRUE!}
+  \item{group.cats}{logical value indicating whether to aggregate all factor levels of each (one-hot encoded) categorical variable into a single variable, by summing up their proportions of branches used. Used if 'model' is of class 'bart', 'pbart' or 'lbart', in whose outputs the contributions of categorical variables are split by their factor levels. The default is FALSE. NOTE that this may incorrectly group variables that have the same name with a different numeric suffix (e.g. "o2" and "o3", or "soil_type_1", "soil_type_2"), so revise your results if you set this to TRUE!}
   \item{n.per}{(if imp.type="permutation") number of permutations for each variable. The default is 10.}
-  \item{data}{(if imp.type="permutation") matrix or data frame with the predictor variables for which to compute permutation importance. The default is to extract from the model object if it contains this information (e.g. for models of class "glm", "GBMFit", or "bart" computed with keeptrees=TRUE), or an error message otherwise, in which case the user needs to provide this argument.}
+  \item{data}{(if imp.type="permutation") matrix or data frame with the predictor variables for which to compute permutation importance. The default is to extract data from the model object if it contains this information (e.g. for models of class "glm", "GBMFit", or "bart" computed with keeptrees=TRUE), or an error message otherwise, in which case the user needs to provide this argument. Note that only the variables actually included in the model should be provided in 'data'.}
   \item{n.trees}{(if imp.type="permutation") argument required by \code{predict.GBMFit()} if 'model' is of class "GBMFit". The default is 100.}
   \item{plot}{logical value indicating whether to produce a plot with the results. The default is TRUE.}
   \item{plot.type}{(if plot=TRUE) character value indicating the type of plot to produce. Can be "\code{\link{lollipop}}" (the default), "\code{\link{barplot}}", or "\code{\link{boxplot}}". Note that the latter is only useful when 'model' contains several importance values per variable (e.g. for models of class "bart"). Partial argument matching is used.}

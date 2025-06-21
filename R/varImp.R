@@ -1,6 +1,6 @@
-varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, group.cats = FALSE, n.per = 10, data = NULL, n.trees = 100, plot = TRUE, plot.type = "lollipop", error.bars = "sd", ylim = "auto0", col = c("#4477aa", "#ee6677"), plot.points = TRUE, legend = TRUE, grid = TRUE, verbosity = 2, ...) {
+varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, group.cats = FALSE, n.per = 10, data = NULL, n.trees = 100, plot = TRUE, plot.type = "lollipop", error.bars = "sd", ylim = "auto0", col = c("steelblue4", "coral2"), plot.points = TRUE, legend = TRUE, grid = TRUE, verbosity = 2, ...) {
   
-  # version 2.7 (6 Mar 2025)
+  # version 2.8 (21 Jun 2025)
   
   # if 'col' has length 2 and varImp has negative values (e.g. for z-value), those will get the second colour
   
@@ -16,8 +16,9 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
     length(col) %in% 1:2
   )
   
-  is_bart <- methods::is(model, "bart") || methods::is(model, "pbart") || methods::is(model, "lbart")
-  is_flexbart <- methods::is(model, "list") && c("varcounts", "trees") %in% names(model)
+  # is_bart <- inherits(model, "bart") || inherits(model, "pbart") || inherits(model, "lbart")
+  is_bart <- inherits(model, c("bart", "pbart", "lbart"))
+  is_flexbart <- inherits(model, "list") && c("varcounts", "trees") %in% names(model)
   
   if ((is_bart || is_flexbart) && imp.type == "permutation")
     stop("imp.type='permutation' not yet implemented for BART models")
@@ -31,9 +32,15 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
   }
   
   
+  if ((inherits(model, c("Gam", "gam", "maxnet")) && imp.type == "each")) {
+      warning("'imp.type' changed to 'permutation', as 'each' is not implemented for this class of 'model'.")
+      imp.type <- "permutation"
+  }  # this must come before glm; as gam is also class glm
+  
+  
   if (imp.type == "each") {
     
-    if (methods::is(model, "glm")) {  #  && !methods::is(model, "Gam")
+    if (inherits(model, "glm")) {  #  && !inherits(model, "Gam")
       
       if (family(model)$family != "binomial")  stop ("This function is currently only implemented for binary-response models of family 'binomial'.")
       
@@ -55,7 +62,7 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
       # }
     }  # end if glm
     
-    else if (methods::is(model, "gbm")) {
+    else if (inherits(model, "gbm")) {
       # requireNamespace("gbm")  # would require a suggest/depend
       if ("gbm" %in% .packages()) {
         metric <- "Relative influence"
@@ -69,7 +76,7 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
       }
     }
     
-    else if (methods::is(model, "GBMFit")) {
+    else if (inherits(model, "GBMFit")) {
       if ("gbm3" %in% .packages()) {
         metric <- "Relative influence"
         if (verbosity > 1) cat("\nMetric:", metric, "\n\n")
@@ -82,7 +89,7 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
       }
     }
     
-    else if (methods::is(model, "randomForest")) {
+    else if (inherits(model, "randomForest")) {
       metric <- colnames(model$importance)
       if (verbosity > 1) cat("\nMetric:", metric, "\n\n")
       varimp <- model$importance  # / nrow(model$importance) / 100  # doesn't work well for mean accuracy decrease
@@ -108,7 +115,7 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
       varimp <- colMeans(varimps)
       
       if (group.cats) {
-        if (methods::is(model, "bart")) {
+        if (inherits(model, "bart")) {
           cat.vars <- names(which(lapply(attr(model$fit$data@x, "drop"), length) > 1))
           names.nosuffix <- names(varimp)
           for (v in cat.vars) {
@@ -117,7 +124,8 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
           }
         }
         
-        else if (methods::is(model, "pbart") || methods::is(model, "lbart")) {
+        # else if (inherits(model, "pbart") || inherits(model, "lbart")) {
+        else if (inherits(model, c("pbart", "lbart"))) {
           names.nosuffix <- gsub("[0-9]+$", "", colnames(model$varcount))
         }  # but WATCH OUT: other variables with numeric suffix (e.g. "o2" and "o3") will be grouped too! also cat vars with same name but different numeric suffix, e.g. "var" and "var2"
         
@@ -136,7 +144,7 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
         }
       }  # end if group.cats
       
-      if (methods::is(model, "bart")) {  #  || methods::is(model, "pbart") || methods::is(model, "lbart")
+      if (inherits(model, "bart")) {  #  || inherits(model, "pbart") || inherits(model, "lbart")
         if (is.null(model$fit)) {
           stop("'model' does not contain the required info; please compute it with keeptrees=TRUE")
         }
@@ -146,7 +154,7 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
           stop("'model' does not have predictor attributes; please compute it with column names in the predictor variables")
         }
         
-        # if (methods::is(model, "bart"))
+        # if (inherits(model, "bart"))
         dropped.vars <- names(which(unlist(attr(model$fit$data@x, "drop")) == 1))
         # else dropped.vars <- colnames(model$varcount)[model$rm.const]  # no, because these names already have the cat vars divided and renamed according to their factor levels, so the 'rm.const' indices do not correctly match the original var names
         
@@ -162,36 +170,36 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
       
     }  # end if bart
     
-    else if (methods::is(model, "maxnet")) {
-      
-      if (imp.type == "each") {
-        if (verbosity > 0) message("'imp.type' changed to 'permutation', as 'each' is not implemented for this class of 'model'.")
-        imp.type <- "permutation"
-      }
-      
-    }
-      
+    # else if (inherits(model, "maxnet")) {
+    #   
+    #   if (imp.type == "each") {
+    #     if (verbosity > 0) warning("'imp.type' changed to 'permutation', as 'each' is not implemented for this class of 'model'.")
+    #     imp.type <- "permutation"
+    #   }
+    #   
+    # }
     
     else stop ("'model' is of a non-implemented class.")
     
   }  # end if imp.type = "each"
   
   
-  if (imp.type == "permutation") {  # do not add 'else', to allow imp.type changes above
+  if (imp.type == "permutation") {  # do not use 'else', to allow imp.type changes above
     
     metric <- "Permutation importance"
     
     
-    if (methods::is(model, "glm") || methods::is(model, "Gam") || methods::is(model, "gbm") || methods::is(model, "GBMFit"))
-      pred.type <- "response"
+    # if (inherits(model, "glm") || inherits(model, "Gam") || inherits(model, "gam") || inherits(model, "gbm") || inherits(model, "GBMFit"))
+      if (inherits(model, c("glm", "Gam", "gam", "gbm", "GBMFit")))
+        pred.type <- "response"
     
-    else if (methods::is(model, "randomForest"))
-      pred.type <- "prob"
+      else if (inherits(model, "randomForest"))
+        pred.type <- "prob"
     
     else if (is_bart)
       pred.type <- "ev"
     
-    else if (methods::is(model, "maxnet"))
+    else if (inherits(model, "maxnet"))
       pred.type <- "cloglog"
     
     

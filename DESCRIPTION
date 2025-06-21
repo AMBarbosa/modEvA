@@ -1,8 +1,8 @@
 Package: modEvA
 Type: Package
 Title: Model Evaluation and Analysis
-Version: 3.36
-Date: 2025-06-09
+Version: 3.37
+Date: 2025-06-21
 Authors@R: c(person(given = c("A.", "Marcia"),
                       family = "Barbosa",
                       role = c("aut", "cre"),
@@ -38,7 +38,6 @@ Maintainer: A. Marcia Barbosa <ana.marcia.barbosa@gmail.com>
 Imports: graphics,
          grDevices,
          stats,
-         methods,
          terra (> 1.5-50)
 Description: Analyses species distribution models and evaluates their performance. It includes functions for variation partitioning, extracting variable importance, computing several metrics of model discrimination and calibration performance, optimizing prediction thresholds based on a number of criteria, performing multivariate environmental similarity surface (MESS) analysis, and displaying various analytical plots. Initially described in Barbosa et al. (2013) <doi:10.1111/ddi.12100>.
 LazyLoad: yes
