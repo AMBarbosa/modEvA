@@ -36,8 +36,8 @@ MillerCalib <- function(model = NULL, obs = NULL, pred = NULL, plot = TRUE, line
       # plotext <- paste0("slope = " , round(slope, digits), "\n(intercept = ", round(intercept, digits), ")")
       # text(x = 1, y = ymin + 0.15 * (ymax - ymin), adj = 1, labels = plotext)
       text(x = 1, y = ymin + 0.175 * (ymax - ymin), adj = 1, labels = paste0("slope = " , round(slope, digits)))
-      text(x = 1, y = ymin + 0.115 * (ymax - ymin), adj = 1, labels = paste0("slope - 1 = ", round(slope - 1, digits)), col = "darkred", cex = 0.9)
-      text(x = 1, y = ymin + 0.05 * (ymax - ymin), adj = 1, labels = paste0("intercept = ", round(intercept, digits)), col = "darkgrey", cex = 0.9)
+      text(x = 1, y = ymin + 0.115 * (ymax - ymin), adj = 1, labels = paste0("intercept = ", round(intercept, digits)), col = "darkgrey", cex = 0.9)
+      text(x = 1, y = ymin + 0.05 * (ymax - ymin), adj = 1, labels = paste0("slope - 1 = ", round(slope - 1, digits)), col = "darkred", cex = 0.9)
     }  # end if plot.values
   }  # end if plot
 
