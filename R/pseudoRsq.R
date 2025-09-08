@@ -66,7 +66,7 @@ pseudoRsq <- function(model = NULL, obs = NULL, pred = NULL, use = "pairwise.com
     Tjur <- mean(pred[obs == 1]) - mean(pred[obs == 0])
   else {
     Tjur <- NA
-    message("NOTE: Tjur R-squared applies only to binomial GLMs")
+    if (verbosity > 0) message("NOTE: Tjur R-squared applies only to binomial (binary, 0-1 response) models")
   }
 
   sqPearson <- cor(obs, pred, use = use) ^ 2

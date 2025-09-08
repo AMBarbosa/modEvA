@@ -1,5 +1,5 @@
 MillerCalib <- function(model = NULL, obs = NULL, pred = NULL, plot = TRUE, line.col = "darkblue", diag = TRUE, diag.col = "lightblue3", plot.values = TRUE, digits = 2, xlab = "", ylab = "", main = "Miller calibration", na.rm = TRUE, rm.dup = FALSE, verbosity = 2, ...) {
-  # version 2.0 (18 Dec 2024)
+  # version 2.1 (3 Jul 2025)
 
   obspred <- inputMunch(model, obs, pred, na.rm = na.rm, rm.dup = rm.dup, verbosity = verbosity)
   obs <- obspred[ , "obs"]
@@ -20,6 +20,7 @@ MillerCalib <- function(model = NULL, obs = NULL, pred = NULL, plot = TRUE, line
   mod <- glm(obs ~ logit, family = binomial)
   intercept <- mod$coef[[1]]
   slope <- mod$coef[[2]]
+  slopeDiff <-  abs(slope - 1)
   #std.err <- summary(mod)$coefficients["logit", "Std. Error"]
   #slope.p <- abs((slope - 1) / sqrt(std.err^2 + 0))  # Paternoster 98; http://stats.stackexchange.com/questions/55501/test-a-significant-difference-between-two-slope-values
   #slope.t <- (slope - 1) / std.err
@@ -37,10 +38,10 @@ MillerCalib <- function(model = NULL, obs = NULL, pred = NULL, plot = TRUE, line
       # text(x = 1, y = ymin + 0.15 * (ymax - ymin), adj = 1, labels = plotext)
       text(x = 1, y = ymin + 0.175 * (ymax - ymin), adj = 1, labels = paste0("slope = " , round(slope, digits)))
       text(x = 1, y = ymin + 0.115 * (ymax - ymin), adj = 1, labels = paste0("intercept = ", round(intercept, digits)), col = "darkgrey", cex = 0.9)
-      text(x = 1, y = ymin + 0.05 * (ymax - ymin), adj = 1, labels = paste0("slope - 1 = ", round(slope - 1, digits)), col = "darkred", cex = 0.9)
+      text(x = 1, y = ymin + 0.05 * (ymax - ymin), adj = 1, labels = paste0("slopeDiff = ", round(slopeDiff, digits)), col = "darkred", cex = 0.9)
     }  # end if plot.values
   }  # end if plot
 
   # return(list(intercept = intercept, slope = slope, slope.pvalue = slope.p))
-  list(intercept = intercept, slope = slope)
+  list(intercept = intercept, slope = slope, slopeDiff = slopeDiff)
 }  # end MillerCalib function
