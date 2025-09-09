@@ -1,6 +1,6 @@
 varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, group.cats = FALSE, n.per = 10, data = NULL, n.trees = 100, plot = TRUE, plot.type = "lollipop", error.bars = "sd", ylim = "auto0", col = c("steelblue4", "coral2"), plot.points = TRUE, legend = TRUE, grid = TRUE, verbosity = 2, ...) {
   
-  # version 2.8 (21 Jun 2025)
+  # version 2.9 (8 Sep 2025)
   
   # if 'col' has length 2 and varImp has negative values (e.g. for z-value), those will get the second colour
   
@@ -22,7 +22,7 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
   
   if ((is_bart || is_flexbart) && imp.type == "permutation")
     stop("imp.type='permutation' not yet implemented for BART models")
-    
+  
   
   if (!is_bart && !is_flexbart)  error.bars <- NA
   
@@ -33,8 +33,8 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
   
   
   if ((inherits(model, c("Gam", "gam", "maxnet")) && imp.type == "each")) {
-      warning("'imp.type' changed to 'permutation', as 'each' is not implemented for this class of 'model'.")
-      imp.type <- "permutation"
+    warning("'imp.type' changed to 'permutation', as 'each' is not implemented for this class of 'model'.")
+    imp.type <- "permutation"
   }  # this must come before glm; as gam is also class glm
   
   
@@ -184,17 +184,17 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
   }  # end if imp.type = "each"
   
   
-  if (imp.type == "permutation") {  # do not use 'else', to allow imp.type changes above
+  if (imp.type == "permutation") {  # no 'else', to allow imp.type changes above
     
     metric <- "Permutation importance"
     
     
     # if (inherits(model, "glm") || inherits(model, "Gam") || inherits(model, "gam") || inherits(model, "gbm") || inherits(model, "GBMFit"))
-      if (inherits(model, c("glm", "Gam", "gam", "gbm", "GBMFit")))
-        pred.type <- "response"
+    if (inherits(model, c("glm", "Gam", "gam", "gbm", "GBMFit")))
+      pred.type <- "response"
     
-      else if (inherits(model, "randomForest"))
-        pred.type <- "prob"
+    else if (inherits(model, "randomForest"))
+      pred.type <- "prob"
     
     else if (is_bart)
       pred.type <- "ev"
@@ -204,17 +204,24 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
     
     
     if (is.null(data)) {
-      data <- as.data.frame(mod2obspred(model, x.only = TRUE))
+      data <- mod2obspred(model, x.only = TRUE)
       names(data) <- gsub("s\\(|\\)", "", names(data))  # for gam models
-    }
+  }
     
+    data <- as.data.frame(data)
+    
+    # remove column attributes to avoid GAM error:
+    data[] <- lapply(data, function(x) { attributes(x) <- NULL; x })
     
     if (inherits(model, "bart"))
-      original_predictions <- as.vector(predict(model, as.data.frame(data), type = pred.type))
+      original_predictions <- as.vector(predict(model, data, type = pred.type))
+    else if (inherits(model, "Gam"))
+      original_predictions <- as.vector(predict(model, type = pred.type, n.trees = n.trees))
     else
-      original_predictions <- as.vector(predict(model, as.data.frame(data), type = pred.type, n.trees = n.trees))
+      original_predictions <- as.vector(predict(model, data, type = pred.type))
     
-    varimp <- numeric(ncol(data))
+    # varimp <- numeric(ncol(data))
+    varimp <- rep(NA_real_, ncol(data))
     
     for (v in seq_along(varimp)) {
       permuted_scores <- numeric(n.per)
@@ -222,10 +229,15 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
       for (p in 1:n.per) {
         permuted_data <- data
         permuted_data[ , v] <- sample(permuted_data[ , v])
+        
         if (inherits(model, "bart"))
-          permuted_predictions <- as.vector(predict(model, as.data.frame(data)))
-        else
-          permuted_predictions <- as.vector(predict(model, as.data.frame(permuted_data), type = pred.type))
+          permuted_predictions <- as.vector(predict(model, data))
+        else if (inherits(model, "GBMFit"))
+          permuted_predictions <- as.vector(predict(model, permuted_data, type = pred.type, n.trees = n.trees))
+        else if (inherits(model, "Gam"))
+          permuted_predictions <- as.vector(gam::predict.Gam(model, permuted_data, type = pred.type, n.trees = n.trees))
+        else permuted_predictions <- as.vector(predict(model, permuted_data, type = pred.type))
+        
         permuted_scores[p] <- sqrt(mean((original_predictions - permuted_predictions) ^ 2))  # RMSE
       }
       
