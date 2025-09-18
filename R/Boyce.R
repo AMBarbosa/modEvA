@@ -70,13 +70,15 @@ Boyce <- function(model = NULL, obs = NULL, pred = NULL, n.bins = NA, bin.width 
   if (length(f) < 2) {
     b <- NA
   } else {
-    r <- 1:length(f)
+    # r <- 1:length(f)
     if (rm.dup.classes) {
       r <- c(1:length(f))[f != c(f[-1], TRUE)]
     }
     b <- cor(f[r], vec.mov[to.keep][r], method = method)
   }
 
+  r <- 1:length(f)  # moved out here becasue used also in lines() below
+  
   HS <- apply(interval, 1, sum) / 2
   if (length(n.bins) == 1 & is.na(n.bins)) {
     HS[length(HS)] <- HS[length(HS)] - 1
