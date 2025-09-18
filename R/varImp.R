@@ -1,6 +1,6 @@
 varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, group.cats = FALSE, n.per = 10, data = NULL, n.trees = 100, plot = TRUE, plot.type = "lollipop", error.bars = "sd", ylim = "auto0", col = c("steelblue4", "coral2"), plot.points = TRUE, legend = TRUE, grid = TRUE, verbosity = 2, ...) {
   
-  # version 2.9 (8 Sep 2025)
+  # version 3.0 (18 Sep 2025)
   
   # if 'col' has length 2 and varImp has negative values (e.g. for z-value), those will get the second colour
   
@@ -204,19 +204,19 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
     
     
     if (is.null(data)) {
-      data <- mod2obspred(model, x.only = TRUE)
+      data <- as.data.frame(mod2obspred(model, x.only = TRUE))
       names(data) <- gsub("s\\(|\\)", "", names(data))  # for gam models
   }
-    
-    data <- as.data.frame(data)
-    
+
     # remove column attributes to avoid GAM error:
     data[] <- lapply(data, function(x) { attributes(x) <- NULL; x })
     
     if (inherits(model, "bart"))
       original_predictions <- as.vector(predict(model, data, type = pred.type))
     else if (inherits(model, "Gam"))
-      original_predictions <- as.vector(predict(model, type = pred.type, n.trees = n.trees))
+      original_predictions <- as.vector(predict(model, type = pred.type))
+    else if (inherits(model, "GBMFit"))
+      original_predictions <- as.vector(predict(model, newdata = data, type = pred.type, n.trees = n.trees))
     else
       original_predictions <- as.vector(predict(model, data, type = pred.type))
     
@@ -235,7 +235,7 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
         else if (inherits(model, "GBMFit"))
           permuted_predictions <- as.vector(predict(model, permuted_data, type = pred.type, n.trees = n.trees))
         else if (inherits(model, "Gam"))
-          permuted_predictions <- as.vector(gam::predict.Gam(model, permuted_data, type = pred.type, n.trees = n.trees))
+          permuted_predictions <- as.vector(gam::predict.Gam(model, permuted_data, type = pred.type))
         else permuted_predictions <- as.vector(predict(model, permuted_data, type = pred.type))
         
         permuted_scores[p] <- sqrt(mean((original_predictions - permuted_predictions) ^ 2))  # RMSE
