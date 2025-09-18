@@ -66,7 +66,10 @@ Boyce <- function(model = NULL, obs = NULL, pred = NULL, n.bins = NA, bin.width 
 
   to.keep <- which(!is.nan(f))  # changed from f!="NaN"
   f <- f[to.keep]
+  
+  r <- 1:length(f)  # moved out here becasue used also in lines() below
 
+  r <- 1:length(f)  # moved out here becasue used also in lines() below
   if (length(f) < 2) {
     b <- NA
   } else {
@@ -76,8 +79,6 @@ Boyce <- function(model = NULL, obs = NULL, pred = NULL, n.bins = NA, bin.width 
     }
     b <- cor(f[r], vec.mov[to.keep][r], method = method)
   }
-
-  r <- 1:length(f)  # moved out here becasue used also in lines() below
   
   HS <- apply(interval, 1, sum) / 2
   if (length(n.bins) == 1 & is.na(n.bins)) {
