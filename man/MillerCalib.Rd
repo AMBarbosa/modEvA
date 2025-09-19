@@ -18,7 +18,7 @@ main = "Miller calibration", na.rm = TRUE, rm.dup = FALSE, verbosity = 2, ...)
   \item{line.col}{colour for the Miller regression line (if plot = TRUE).}
   \item{diag}{logical (default TRUE), whether or not to add the reference diagonal (if plot = TRUE).}
   \item{diag.col}{line colour for the reference diagonal.}
-  \item{plot.values}{logical (default TRUE), whether or not to report the values of the intercept and slope on the plot.}
+  \item{plot.values}{logical (default TRUE), whether or not to show in the plot the values of the intercept, slope, and absolute difference between the slope and the ideal value of 1.}
   \item{digits}{integer number indicating the number of digits to which the values in the plot should be rounded. Dafaults to 2. This argument is ignored if 'plot' or 'plot.values' are set to FALSE.}
   \item{xlab}{label for the x axis.}
   \item{ylab}{label for the y axis.}
@@ -33,17 +33,18 @@ Calibration or reliability measures how a model's predicted probabilities relate
 
 Note that Miller's statistics assess the model globally: a model is well calibrated if the average of all predicted probabilities equals the proportion of presences in the modelled data. For logistic regression models, perfect calibration is always attained on the same data used for building the model (Miller 1991); Miller's calibration statistics are mainly useful when projecting a model outside those training data.
 
-Calibration can be separated into two measurable components, bias and spread, and a third component, unexplained error. Bias describes a consistent overestimate or underestimate of presence probability, which is reflected by a Miller intercept above or below 0 (i.e., a model line above or below the reference diagonal). Spread describes a departure of the model line from the 45-degree slope. A slope greater than 1 indicates that predicted values above 0.5 are underestimating, and predicted values below 0.5 are overestimating, the probability of presence. A slope smaller than 1 (while greater than 0) implies that predicted values below 0.5 are underestimating, and values above 0.5 are overestimating, the probability of presence (Pearce & Ferrier 2000). A Miller slope very different from 1 indicates a poorly calibrated model. Baquero et al. (2021) proposed that values between 0.5 and 1.5 can be considered not very different from 1. The unexplained error component can be assessed, though only in part, through residual analysis (Miller 1991; Pearce & Ferrier 2000).
+Calibration can be separated into two measurable components, bias and spread, and a third component, unexplained error. Bias describes a consistent overestimate or underestimate of presence probability, which is reflected by a Miller intercept above or below 0 (i.e., a model line above or below the reference diagonal). Spread describes a departure of the model line from the 45-degree slope. A slope greater than 1 indicates that predicted values above 0.5 are underestimating, and predicted values below 0.5 are overestimating, the probability of presence. A slope smaller than 1 (while greater than 0) implies that predicted values below 0.5 are underestimating, and values above 0.5 are overestimating, the probability of presence (Pearce & Ferrier 2000). A Miller slope very different from 1 indicates a poorly calibrated model. Baquero et al. (2021) proposed that a value between 0.5 and 1.5 (i.e., absolute slope difference up to 0.5) can be considered not very different from 1. The unexplained error component can be assessed, though only in part, through residual analysis (Miller 1991; Pearce & Ferrier 2000).
 
 While Miller's calibration statistics were originally conceived for generalized linear models with binomial distribution and logit link (Miller 1991), they may also apply to other models that also estimate presence probability, including those that use different link functions such as probit or cloglog. Regardless of how they get there, these models attempt to estimate presence probabilities as well calibrated as possible, and the logit is the canonical link for the Bernoulli distribution which is appropriate for a binary response variable (Jane Elith, pers. comm.). Indeed, the Miller slope is visibly worse when those other link functions are used for computing it.
 
 Miller's calibration slope (though not the intercept) is also adequate to assess the calibration of other predictions related to presence probability, such as suitability and favourability (see e.g. 'Fav' function in the \pkg{fuzzySim} package). Indeed, the slope is the same for presence probability and its corresponding favourability value (see Examples, bottom).
 }
 \value{
-This function returns a list of two integer values:
+This function returns a list of three numeric values:
 \item{intercept}{the calibration intercept.}
 \item{slope}{the calibration slope.}
-If \code{plot = TRUE}, a plot will be produced with the model calibration line, optionally (if diag = TRUE) over the reference diagonal, and also optionally (if plot.values = TRUE) with the intercept and slope values printed on it, as well as the difference between the slope and its optimal value.
+\item{slopeDiff}{the absolute difference between the obtained slope and the optimal value of 1.}
+If \code{plot = TRUE}, a plot will be produced with the model calibration line, optionally (if diag = TRUE) over the reference diagonal, and also optionally (if plot.values = TRUE) with the output values printed on it.
 }
 \references{
 Baquero R.A., Barbosa A.M., Ayllon D., Guerra C., Sanchez E., Araujo M.B. & Nicola G.G. (2021) Potential distributions of invasive vertebrates in the Iberian Peninsula under projected changes in climate extreme events. Diversity and Distributions, 27(11): 2262-2276
@@ -68,8 +69,7 @@ data(rotif.mods)
 mod <- rotif.mods$models[[1]]
 
 MillerCalib(model = mod)
-MillerCalib(model = mod, plot.values = FALSE)
-MillerCalib(model = mod, main = "Model calibration line")
+MillerCalib(model = mod, plot.values = FALSE, main = "Model calibration line")
 
 
 # you can also use MillerCalib with vectors of observed and predicted values

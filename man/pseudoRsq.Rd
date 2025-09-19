@@ -2,7 +2,7 @@
 \alias{pseudoRsq}
 \title{Pseudo-R-squared measures for binary-response models}
 \description{
-This function computes some (pseudo) R-squared statistics for models binomial Generalized Linear Models, or for observations + predictions of other binary-response models.
+This function computes several pseudo R-squared statistics for a binomial Generalized Linear Model object, or for observations and predictions of any binary-response model.
 }
 \usage{
 pseudoRsq(model = NULL, obs = NULL, pred = NULL, use = "pairwise.complete.obs",
@@ -10,7 +10,7 @@ plot = TRUE, plot.type = "lollipop", na.rm = TRUE, rm.dup = FALSE,
 verbosity = 2, ...)
 }
 \arguments{
-  \item{model}{a binary-response model object of class "glm". Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
+  \item{model}{a binary-response model object of class "glm". Alternatively, you can input the 'obs' and 'pred' values of any other binary-response model.}
   \item{obs}{alternatively to 'model' and together with 'pred', a vector of observed presences (1) and absences (0) of a binary response variable. Alternatively (and if 'pred' is a 'SpatRaster'), a two-column matrix or data frame containing, respectively, the x (longitude) and y (latitude) coordinates of the presence points, in which case the 'obs' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
   \item{pred}{alternatively to 'model' and together with 'obs', a numeric vector with the corresponding predicted values of presence probability. Must be of the same length and in the same order as 'obs'. Alternatively (and if 'obs' is a set of point coordinates), a 'SpatRaster' map of the predicted values for the entire evaluation region, in which case the 'pred' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
   \item{use}{argument to be passed to \code{\link{cor}} for handling mising values.}
@@ -22,9 +22,9 @@ verbosity = 2, ...)
   \item{\dots}{additional arguments to pass to the plotting function (see Examples).}
 }
 \details{
-Implemented measures include the R-squared metrics of McFadden (1974), Cox-Snell (1989), Nagelkerke (1991, which corresponds to the corrected Cox-Snell, eliminating its upper bound), and Tjur (2009). See Allison (2014) for a brief review of these measures.
+Implemented measures include the pseudo R-squared values of McFadden (1974), Cox & Snell (1989), Nagelkerke (1991, which corresponds to the corrected Cox-Snell, eliminating its upper bound), and Tjur (2009). See Allison (2014) for a brief review of these measures. Note that Tjur's R-squared can only be calculated for models with a binomial response variable; otherwise, NA will be returned.
 
-Note that pseudo R-squared values tend to be considerably lower than those of the R-squared for ordinary regression analysis, and they should not be judged by the same standards for a "good fit". For example, for McFadden's R-squared, values of 0.2 to 0.4 represent an excellent fit (McFadden, 1979).
+Note also that pseudo R-squared values tend to be considerably lower than those of the R-squared for ordinary regression analysis, and they should not be judged by the same standards for a "good fit". For example, for McFadden's R-squared, values of 0.2 to 0.4 represent an excellent fit (McFadden, 1979).
 }
 \value{The function returns a named list of the calculated R-squared values.}
 \note{This function was previously named RsqGLM.}
@@ -42,10 +42,7 @@ Nagelkerke, N.J.D. (1991) A note on a general definition of the coefficient of d
 Tjur T. (2009) Coefficients of determination in logistic regression models - a new proposal: the coefficient of discrimination. The American Statistician, 63: 366-372.
 }
 \author{A. Marcia Barbosa}
-\note{
-Tjur's R-squared can only be calculated for models with binomial response variable; otherwise, NA will be returned.
-}
-\seealso{\code{\link{Dsquared}}, \code{\link{AUC}}, \code{\link{threshMeasures}}, \code{\link{HLfit}}}
+\seealso{\code{\link{Dsquared}}, \code{\link{AUC}}, \code{\link{threshMeasures}}, \code{\link{HLfit}}, \code{\link{MillerCalib}}}
 \examples{
 # load sample models:
 data(rotif.mods)

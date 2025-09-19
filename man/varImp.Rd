@@ -61,7 +61,7 @@ Greenwell B.M. & Boehmke B.C. (2020) Variable Importance Plots - An Introduction
 Weissgerber T.L., Milic N.M., Winham S.J. & Garovic V.D. (2015) Beyond Bar and Line Graphs: Time for a New Data Presentation Paradigm. PLOS Biol 13:e1002128. https://doi.org/10.1371/JOURNAL.PBIO.1002128
 }
 \seealso{
-\code{\link{plotCoeffs}}; \code{\link{summary.glm}}; \code{caret::varImp}; \code{embarcadero::varimp}; \code{enmpa::var_importance}; \code{predicts::varImportance}; \code{biomod2::bm_VariablesImportance}; \code{iml::FeatureImp}; \code{ingredients::feature_importance}; \code{mmpf::permutationImportance}; package \pkg{varImp}; package \pkg{vip}
+\code{\link{plotCoeffs}}; \code{\link{summary.glm}}; \code{caret::varImp}; \code{embarcadero::varimp}; \code{enmpa::var_importance}; \code{predicts::varImportance}; \code{biomod2::bm_VariablesImportance}; \code{iml::FeatureImp}; \code{ingredients::feature_importance}; \code{mmpf::permutationImportance}; package \pkg{varImp}; package \pkg{vip}; numerous packages that implement Shapley values
 }
 \examples{
   # load sample models:
