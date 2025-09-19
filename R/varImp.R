@@ -234,8 +234,8 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
           permuted_predictions <- as.vector(predict(model, data))
         else if (inherits(model, "GBMFit"))
           permuted_predictions <- as.vector(predict(model, permuted_data, type = pred.type, n.trees = n.trees))
-        else if (inherits(model, "Gam"))
-          permuted_predictions <- as.vector(gam::predict.Gam(model, permuted_data, type = pred.type))
+        # else if (inherits(model, "Gam"))
+        #   permuted_predictions <- as.vector(predict(model, permuted_data, type = pred.type))
         else permuted_predictions <- as.vector(predict(model, permuted_data, type = pred.type))
         
         permuted_scores[p] <- sqrt(mean((original_predictions - permuted_predictions) ^ 2))  # RMSE
