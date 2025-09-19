@@ -1,3 +1,64 @@
+# Version 3.41
+## (Committed 2025-  -  )
+
+### New functions:
+
+* clampVars
+
+
+### Modified functions:
+
+
+
+# Version 3.40 -> CRAN
+## (Committed 2025-09-19)
+
+### Modified functions:
+
+* varImp
+    - add required 'n.trees' and 'newdata' args to predict() call for GBM models
+
+* Boyce
+    - move 'r <-' upward to fix bug for edge cases with very few unique pred values
+
+* evaluate (benefiting threshMeasures)
+    - convert a, b, c and d to numeric to avoid integer overflow when large numbers (seen in https://github.com/benjjneb/dada2/issues/1747#issuecomment-1579180381)
+
+
+# Version 3.39
+## (Committed 2025-07-03) -> CRAN
+
+### Modified functions:
+
+* MillerCalib
+    - plot values: replace "slope - 1" with "slopeDiff"
+    - include 'slopeDiff' in output
+
+
+### Other modified files:
+
+* varImp.Rd
+    - mention Shapley values in See Also
+    
+
+# Version 3.38
+## (Committed 2025-06-29)
+
+### Modified functions:
+
+* MillerCalib
+    - move intercept value on plot back to just after slope
+    
+* pseudoRsq
+    - improved Tjur NA message, and show it only when verbosity > 1
+
+
+### Other modified files:
+
+* RsqGLM.Rd, pseudoRsq.Rd
+    - removed duplicated info to avoid future mismatches; slightly improved text
+
+
 # Version 3.37
 ## (Committed 2025-06-21)
 
@@ -54,17 +115,16 @@
 ### Other modified files:
 
 * AUC.Rd
-- mention Swets AUC-ROC interpretation thresholds
+    - mention Swets AUC-ROC interpretation thresholds
 
 * RsqGLM.Rd
 - mention McFadden R-squared interpretation thresholds
 
 * threshMeasures.Rd
-- mention prevalence dependence and add reference on TSS
+    - mention prevalence dependence and add reference on TSS
 
 * VarImp.Rd
-- mention {vip} and other packages in See Also and References
-
+    - mention {vip} and other packages in See Also and References
 
 
 # Version 3.34
