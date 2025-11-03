@@ -1,12 +1,11 @@
-# modEvA
-_**Model Evaluation and Analysis**_
+# `modEvA`: Model Evaluation and Analysis
 
 This package provides a suite of metrics for evaluating the performance of species distribution models (or other models based on a binary response variable), focusing on different facets including discrimination, classification, explanatory power and calibration.
 
-# package homepage:
+# Package homepage:
 Find out more about the package, along with usage manuals and literature examples, at https://modeva.r-forge.r-project.org/.
 
-# to install the latest version:
+# To install the latest version:
 'modEvA' was created long before I knew GitHub, and it's still maintained on its original platform, [R-Forge](https://modeva.r-forge.r-project.org/). So, you can install the development version with:
 
 `install.packages("modEvA", repos="http://R-Forge.R-project.org")`
