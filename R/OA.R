@@ -11,8 +11,8 @@ function(data, sp.cols, var.cols) {
   #noNA <- data.noNA[ , ncol(data.noNA)]
   #data <- data[data[ , ncol(data)] %in% noNA, ]
   
-  na.rm = TRUE
-  if(na.rm) {
+  na.rm <- TRUE
+  if (na.rm) {
     mod.data <- data[ , c(sp.cols, var.cols)]
     data <- data[complete.cases(mod.data), ]
   }

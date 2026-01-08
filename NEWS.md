@@ -1,13 +1,19 @@
 # Version 3.41
-## (Committed 2025-  -  )
-
-### New functions:
-
-* clampVars
-
+## (Committed 2026-01-08)
 
 ### Modified functions:
 
+* Boyce
+    - fixed bug identified in 'ecospat' original code at https://github.com/ecospat/ecospat/issues/99#issue-2528136160
+
+* AUC
+    - added Somer's D (= Gini coefficient) to outputs
+
+
+### Other modified files:
+
+* Boyce.Rd
+    - added "See also" section
 
 
 # Version 3.40 -> CRAN
@@ -22,7 +28,7 @@
     - move 'r <-' upward to fix bug for edge cases with very few unique pred values
 
 * evaluate (benefiting threshMeasures)
-    - convert a, b, c and d to numeric to avoid integer overflow when large numbers (seen in https://github.com/benjjneb/dada2/issues/1747#issuecomment-1579180381)
+    - convert a, b, c and d to numeric, to avoid kappa integer overflow when large numbers (seen in https://github.com/benjjneb/dada2/issues/1747#issuecomment-1579180381)
 
 
 # Version 3.39
@@ -32,7 +38,7 @@
 
 * MillerCalib
     - plot values: replace "slope - 1" with "slopeDiff"
-    - include 'slopeDiff' in output
+    - include 'slopeDiff' in console output
 
 
 ### Other modified files:

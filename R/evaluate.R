@@ -42,8 +42,8 @@ evaluate <-
     # (c*b)/(a*d)  # inverse, would give a (more expectable) unimodal plot of odds against thresholds
     } else if(measure == "ORSS") { value <- (a*d - b*c) / (a*d + b*c)
     } else if(measure == "SEDI") {
-      H_ = a / (a + c)
-      F_ = b / (b + d)
+      H_ <- a / (a + c)
+      F_ <- b / (b + d)
       value <- (log(F_) - log(H_) - log(1 - F_) - log(1 - H_)) / (log(F_) + log(H_) + log(1 + F_) + log(1 + H_))
     } else stop("Invalid measure; available options are ",
                 paste(.modEvAmethods("threshMeasures"), collapse = ", "))

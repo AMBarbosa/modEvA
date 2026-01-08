@@ -1,6 +1,6 @@
 Boyce <- function(model = NULL, obs = NULL, pred = NULL, n.bins = NA, bin.width = "default", res = 100, method = "spearman", rm.dup.classes = FALSE, rm.dup.points = FALSE, pbg = FALSE, plot = TRUE, plot.lines = TRUE, plot.values = TRUE, plot.digits = 3, na.rm = TRUE, verbosity = 2, ...) {
 
-  # version 1.8 (18 Sep 2025)
+  # version 2.0 (8 Jan 2026)
   
   obspred <- inputMunch(model, obs, pred, na.rm = na.rm, rm.dup = rm.dup.points, pbg = pbg, verbosity = verbosity)
   obs <- obspred[ , "obs"]
@@ -30,7 +30,7 @@ Boyce <- function(model = NULL, obs = NULL, pred = NULL, n.bins = NA, bin.width 
     fit <- na.omit(terra::values(fit))
   }
 
-  # the remainder of the function is slightly modified from 'ecospat::ecospat.boyce':
+  # the remainder of the function is slightly modified (where noted) from 'ecospat::ecospat.boyce':
 
   boycei <- function(interval, obs, fit) {
     pi <- sum(as.numeric(obs >= interval[1] & obs <= interval[2])) / length(obs)
@@ -48,14 +48,20 @@ Boyce <- function(model = NULL, obs = NULL, pred = NULL, n.bins = NA, bin.width 
       if (bin.width == "default") {
         bin.width <- (max(fit) - min(fit)) / 10
       }
-      vec.mov <- seq(from = mini, to = maxi - bin.width, by = (maxi - mini - bin.width) / res)
-      vec.mov[res + 1] <- vec.mov[res + 1] + 1
+      # vec.mov <- seq(from = mini, to = maxi - bin.width, by = (maxi - mini - bin.width) / res)
+      # vec.mov[res + 1] <- vec.mov[res + 1] + 1
+      # after https://github.com/ecospat/ecospat/issues/99 and https://github.com/plantarum/ecospat/commit/0c542d51e074d570cb7fb14e4b6dac8b6c2dc432:
+      vec.mov <- seq(from = mini, to = maxi - bin.width, length = res)
       interval <- cbind(vec.mov, vec.mov + bin.width)
     } else {
-      vec.mov <- seq(from = mini, to = maxi, by = (maxi - mini) / n.bins)
+      # vec.mov <- seq(from = mini, to = maxi, by = (maxi - mini) / n.bins)
+      # after https://github.com/ecospat/ecospat/issues/99 and https://github.com/plantarum/ecospat/commit/0c542d51e074d570cb7fb14e4b6dac8b6c2dc432:
+      vec.mov <- seq(from = mini, to = maxi, length.out = n.bins)
       interval <- cbind(vec.mov, c(vec.mov[-1], maxi))
     }
   } else {
+    # vec.mov <- c(mini, sort(n.bins[!n.bins > maxi | n.bins < mini]))
+    # after https://github.com/ecospat/ecospat/issues/99 and https://github.com/plantarum/ecospat/commit/0c542d51e074d570cb7fb14e4b6dac8b6c2dc432:
     vec.mov <- c(mini, sort(n.bins[!n.bins > maxi | n.bins < mini]))
     interval <- cbind(vec.mov, c(vec.mov[-1], maxi))
   }
@@ -80,9 +86,9 @@ Boyce <- function(model = NULL, obs = NULL, pred = NULL, n.bins = NA, bin.width 
   }
   
   HS <- apply(interval, 1, sum) / 2
-  if (length(n.bins) == 1 & is.na(n.bins)) {
-    HS[length(HS)] <- HS[length(HS)] - 1
-  }
+  # if (length(n.bins) == 1 & is.na(n.bins)) {
+  #   HS[length(HS)] <- HS[length(HS)] - 1
+  # }  # deactivated after https://github.com/plantarum/ecospat/commit/0c542d51e074d570cb7fb14e4b6dac8b6c2dc432
   HS <- HS[to.keep]
 
   if (plot && length(f) > 0) {

@@ -186,7 +186,8 @@ AUC <- function(model = NULL, obs = NULL, pred = NULL, simplif = FALSE, interval
                  AUC = AUC,
                  AUCratio = AUC / 0.5,
                  meanPrecision = precision_mean,
-                 GiniCoefficient = 2 * AUC - 1)
+                 GiniCoefficient = 2 * AUC - 1,
+                 SomersD = 2 * (AUC - 0.5))
   
   # if (ci) {  # https://www.ncss.com/wp-content/themes/ncss/pdf/Procedures/PASS/Confidence_Intervals_for_the_Area_Under_an_ROC_Curve.pdf
   #   tbl <- table(obs)

@@ -83,9 +83,9 @@ Wunderlich R.F., Lin Y.-P., Anthony J., Petway J.R. (2019) Two alternative evalu
 A. Marcia Barbosa
 }
 \note{
-"Sensitivity" is the same as "Recall", and "PPP" (positive predictive power) is the same as "Precision".
+"Sensitivity" is the same as "Recall", and "PPP" (positive predictive power) is the same as "Precision". They are both here to match the terminology familiar to different audiences.
 
-Some of the implemented measures (like NMI, UPR, OPR, PPP, NPP) cannot be calculated for thresholds at which there are zeros in the confusion matrix, so they can yield NaN values.
+Some of the implemented measures (like NMI, UPR, OPR, PPP, NPP) cannot be calculated for thresholds at which there are zeros in the confusion matrix, so they can produce NaN values.
 }
 \seealso{
 \code{\link{similarity}}, \code{\link{optiThresh}}, \code{\link{optiPair}}, \code{\link{AUC}}

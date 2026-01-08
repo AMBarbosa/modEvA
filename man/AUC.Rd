@@ -53,7 +53,7 @@ If 'curve' is set to "PR", or if 'method' is manually set to "trapezoid", the AU
 
 Swets (1988) proposed the following thresholds for interpreting ROC AUC scores: below 0.6 = fail; 0.6 to 0.7 = poor; 0.7 to 0.8 = fair; 0.8 to 0.9 = good; 0.9 or higher = excellent. Mind that the ROC AUC has been widely criticized (e.g. Lobo et al. 2008, Jimenez-Valverde et al. 2013), though is still a widely used metric in model evaluation. It is highly correlated with species prevalence (as are the generality of discrimination and classification metrics, including TSS), so prevalence is also output by the AUC function (if \code{simplif = FALSE}, the default) for reference.
 
-Although there are functions to calculate the AUC in other R packages (e.g. \pkg{ROCR}, \pkg{PresenceAbsence}, \pkg{verification}, \pkg{Epi}, \pkg{PRROC}, \pkg{PerfMeas}, \pkg{precrec}), the \code{AUC} function is more compatible with the remaining functions in \pkg{modEvA}, and it can be applied not only to a set of observed vs. predicted values, but also directly to a model object of class "glm", "gam", "gbm", "randomForest" or "bart".
+Although there are functions to calculate the AUC in other R packages (e.g. \pkg{ROCR}, \pkg{PresenceAbsence}, \pkg{verification}, \pkg{Epi}, \pkg{PRROC}, \pkg{PerfMeas}, \pkg{precrec}), the \code{AUC} function is more compatible (in terms of arguments and outputs) with the remaining functions in \pkg{modEvA}; and it can be applied not only to a set of observed vs. predicted values, but also directly to a model object of class "glm", "gam", "gbm", "randomForest" or "bart", or even to a set of presence point coordinates and a raster map of the predictions in the model evaluation region.
 }
 \value{
 If \code{simplif = TRUE}, the function returns only the AUC value (a numeric value between 0 and 1). Otherwise (the default), it returns a \code{list} with the following components:
@@ -63,7 +63,8 @@ If \code{simplif = TRUE}, the function returns only the AUC value (a numeric val
 \item{AUC}{the value of the AUC).}
 \item{AUCratio}{the ratio of the obtained AUC value to the null expectation (0.5).}
 \item{meanPrecision}{the arithmetic mean of precision (proportion of predicted presences actually observed as presences) across all threshold values (defined by 'interval'). It is close to the AUC of the precision-recall (PR) curve.}
-\item{GiniCoefficient}{the Gini coefficient, measured as the area between the ROC curve and the diagonal divided by the area of the upper triangle (2*AUC-1).}
+\item{GiniCoefficient}{the Gini coefficient (aka Gini index or Gini ratio), a measure of statistical dispersion intended to represent inequality, computed as 2*AUC-1.}
+\item{SomersD}{Somers' D, a measure of ordinal association between two variables (i.e. a rank correlation), also used as a quality measure of binary choice, computed as 2*(AUC-0.5). It is mathematically equivalent to the Gini coefficient; they are both here to match the terminology familiar to different audiences.}
 }
 \references{
 Lobo, J.M., Jimenez-Valverde, A. & Real, R. (2008) AUC: a misleading measure of the performance of predictive distribution models. Global Ecology and Biogeography 17: 145-151

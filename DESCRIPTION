@@ -1,8 +1,8 @@
 Package: modEvA
 Type: Package
 Title: Model Evaluation and Analysis
-Version: 3.40
-Date: 2025-09-19
+Version: 3.41
+Date: 2026-01-08
 Authors@R: c(person(given = c("A.", "Marcia"),
                       family = "Barbosa",
                       role = c("aut", "cre"),
@@ -44,3 +44,4 @@ LazyLoad: yes
 LazyData: yes
 License: GPL-3
 URL: http://modeva.r-forge.r-project.org/
+BugReports: https://github.com/AMBarbosa/modEvA/issues
