@@ -1,6 +1,8 @@
 # `modEvA`: Model Evaluation and Analysis
 
+<p align="center">
 <img width="180" height="200" alt="modEvA_hexsticker" src="https://github.com/user-attachments/assets/7494e634-429c-41c1-a15a-f6899b11fae3" />
+</p>
 
 This package provides a suite of metrics for evaluating the performance of species distribution models (or other models based on a binary response variable), focusing on different facets including discrimination, classification, explanatory power and calibration.
 
