@@ -1,15 +1,58 @@
-citHeader("To cite modEvA in publications use:")
+citHeader("To cite modEvA in publications, please use:")
 
-bibentry(bibtype = "Article",
-         title = "New measures for assessing model equilibrium and prediction mismatch in species distribution models",
-         author = c(as.person("A. Marcia Barbosa"), as.person("Raimundo Real"), as.person("A. Roman Munoz"), as.person("Jennifer A. Brown")),
-         journal = "Diversity and Distributions",
-         year = "2013",
-         volume = "19",
-         number = "10",
-         pages = "1333--1338",
-         doi = "10.1111/ddi.12100",
-         url = "https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.12100",
-         textVersion = "Barbosa, A.M., Real, R., Munoz, A.R. & Brown, J.A. (2013). New measures for assessing model equilibrium and prediction mismatch in species distribution models. Diversity and Distributions, 19(10), 1333-1338. DOI: 10.1111/ddi.12100. URL: https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.12100."
+bibentry(
+  bibtype = "Article",
+  title = "New measures for assessing model equilibrium and prediction mismatch in species distribution models",
+  author = c(
+    as.person("A. Marcia Barbosa"),
+    as.person("Raimundo Real"),
+    as.person("A. Roman Munoz"),
+    as.person("Jennifer A. Brown")
+  ),
+  journal = "Diversity and Distributions",
+  year = "2013",
+  volume = "19",
+  number = "10",
+  pages = "1333--1338",
+  doi = "10.1111/ddi.12100",
+  url = "https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.12100",
+  textVersion =
+    "Barbosa, A.M., Real, R., Munoz, A.R. & Brown, J.A. (2013). New measures for assessing model equilibrium and prediction mismatch in species distribution models. Diversity and Distributions, 19(10), 1333-1338. DOI: 10.1111/ddi.12100."
 )
 
+
+if (nzchar(system.file(package = "modEvA"))) {  # for CRAN checks
+
+  meta <- utils::packageDescription("modEvA")
+  
+  authors <- c(
+    as.person("A. Marcia Barbosa"),
+    as.person("Jennifer A. Brown"),
+    as.person("Alberto Jimenez-Valverde"),
+    as.person("Raimundo Real")
+  )
+
+  format_author <- function(p) {
+    family <- p$family
+    given  <- p$given
+    initials <- paste0(substr(given, 1, 1), ".", collapse = "")
+    paste0(family, ", ", initials)
+  }
+
+  author_strings <- vapply(authors, format_author, character(1))
+  author_text <- paste(author_strings, collapse = ", ")
+
+  bibentry(
+    bibtype = "Manual",
+    title   = meta$Title,
+    author  = authors,
+    year    = substr(meta$Date, 1, 4),
+    note    = paste("R package version", meta$Version),
+    url     = meta$URL,
+    textVersion = paste0(
+      author_text, " (", substr(meta$Date, 1, 4), "). ",
+      meta$Title, ". R package version ", meta$Version,
+      ". URL: ", meta$URL, "."
+    )
+  )
+}
