@@ -4,22 +4,23 @@
 Plot the density of predicted or predictor values for presences and absences (or background)
 }
 \description{
-This function produces a histogram and/or a kernel density plot of predicted or predictor values for a binary-response model, optionally separately for the observed presences and absences (or background, if pbg = TRUE), given either a model object or a vector of predicted (or predictor) values, and optionally a vector of the corresponding observed values (with 0 for absence and 1 for presence). When there are multiple predicted values for each site (e.g. for BART models), it can also plot a confidence interval.
+This function produces a \code{\link{hist}}ogram and/or a kernel \code{\link{density}} plot of predicted or predictor values for a binary-response model, optionally separately for the observed presences and absences (or background, if pbg = TRUE), given either a model object or a vector of predicted (or predictor) values, and optionally a vector of the corresponding observed values (with 0 for absence and 1 for presence). When there are multiple predicted values for each site (e.g. for BART models), it can also plot a confidence interval.
 }
 \usage{
 predDensity(model = NULL, obs = NULL, pred = NULL, separate = TRUE,
-type = "both", ci = NA, pbg = FALSE, legend.pos = "topright",
+type = "both", ci = NA, pbg = FALSE, bw = "nrd0", legend.pos = "topright",
 main = "Density of pred values", na.rm = TRUE, rm.dup = FALSE, xlim = NULL,
 verbosity = 2, ...)
 }
 \arguments{
-  \item{model}{a binary-response model object of class "glm", "gam", "gbm", "randomForest" or "bart". If this argument is provided, 'obs' and 'pred' will be extracted with \code{\link{mod2obspred}}. Alternatively, you can input the 'pred' (and optionally 'obs') argument(s) instead of 'model'.}
+  \item{model}{optional binary-response model object of class "glm", "gam", "gbm", "randomForest" or "bart". If this argument is provided, 'obs' and 'pred' will be extracted with \code{\link{mod2obspred}}. Alternatively, you can input the 'pred' (and optionally 'obs') argument(s) instead of 'model'.}
   \item{obs}{alternatively to 'model' and together with 'pred', an optional numeric vector (in the same order of 'pred') of observed presences (1) and absences (0) of a binary response variable. If pbg = TRUE, the presences will be appended to the absences to create the background. Alternatively (and if 'pred' is a 'SpatRaster'), a two-column matrix or data frame containing, respectively, the x (longitude) and y (latitude) coordinates of the presence points, in which case the 'obs' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument may be omitted (to show the density plot of all 'pred' values combined), and it is ignored if 'model' is provided.}
   \item{pred}{alternatively to 'model', a vector of predicted values of presence probability, habitat suitability, environmental favourability or alike; or a vector of values of a continuous predictor variable. Must be of the same length and in the same order as 'obs' (if the latter is provided). Alternatively (and if 'obs' is a set of point coordinates), a 'SpatRaster' map of the predicted values for the entire evaluation region, in which case the 'pred' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
   \item{separate}{logical value indicating whether prediction densities should be computed separately for observed presences (ones) and absences (zeros), or for presences (ones) and background (ones and zeros) if pbg = TRUE. Defaults to TRUE, but it is automatically changed to FALSE if either 'model' or 'obs' are not provided, or if 'ci' is not NA.}
   \item{type}{character vector specifying whether to produce a "histogram", a "density" plot, or "both" (the default). Partial argument matching is used.}
   \item{ci}{optional numeric value for a confidence interval to add to the plot, e.g. 0.95 for 95\%. The default is NA. If specified, argument 'separate' is set to FALSE.}
-  \item{pbg}{logical value to pass to \code{\link{inputMunch}} indicating whether to use presence/background (rather than presence/absence) data. Default FALSE.}
+  \item{pbg}{logical value (default FALSE) to pass to \code{\link{inputMunch}} indicating whether to use presence/background (rather than presence/absence) data.}
+  \item{bw}{argument to pass to \code{\link{density}} indicating the the smoothing bandwidth to use.}
   \item{legend.pos}{character specifying the position for the legend; NA or "n" for no legend. Position can be "topright" (the default), "topleft, "bottomright"", "bottomleft", "top", "bottom", "left", "right", or "center". Partial argument matching is used.}
   \item{main}{main title for the plot.}
   \item{na.rm}{logical value indicating whether missing values should be ignored in computations. Defaults to TRUE.}
@@ -28,17 +29,14 @@ verbosity = 2, ...)
   \item{verbosity}{integer specifying the amount of messages to display. Defaults to the maximum implemented; lower numbers (down to 0) decrease the number of messages.}
   \item{\dots}{additional arguments to pass to \code{\link{hist}}, e.g. 'breaks' or 'border'.}
 }
-\details{
-For more details, see \code{\link{density}} and/or \code{\link{hist}}.
-}
 \value{
-This function outputs and plots the object(s) specified in 'type' -- by default, a \code{\link{density}} object and a \code{\link{hist}}ogram.
+This function outputs and plots a list containing the object(s) specified in 'type' - by default, a \code{\link{density}} object and a \code{\link{hist}}ogram of the input predicted or predictor values, optionally (if separate=TRUE) separately for presence and absence rows. If separate=TRUE, the output also includes the results of a \code{\link{wilcox.test}} and a \code{\link{ks.test}} comparing those values.
 }
 \author{
 A. Marcia Barbosa
 }
 \seealso{
-\code{\link{hist}}, \code{\link{density}}, \code{\link{predPlot}}
+\code{\link{predPlot}}
 }
 \examples{
 # load sample models:

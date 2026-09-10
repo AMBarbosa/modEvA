@@ -2,7 +2,7 @@
 \alias{RsqGLM}
 \title{R-squared measures for GLMs}
 \description{
-This function calculates some (pseudo) R-squared statistics for binomial Generalized Linear Models. It is now DEPRECATED, please use \code{\link{pseudoRsq}} instead.
+This function is DEPRECATED, please use \code{\link{pseudoRsq}} instead.
 }
 \usage{
 RsqGLM(model = NULL, obs = NULL, pred = NULL, use = "pairwise.complete.obs",
@@ -25,5 +25,5 @@ verbosity = 2, ...)
 \value{See \code{\link{pseudoRsq}}.}
 \author{A. Marcia Barbosa}
 \examples{
-# This function is DEPRECATED, please see \code{\link{pseudoRsq}} instead.
+# This function is DEPRECATED, please see ?pseudoRsq instead.
 }

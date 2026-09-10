@@ -10,7 +10,7 @@ This function computes the log-likelihood of a model, given a model object or a 
 logLike(model = NULL, obs = NULL, pred = NULL, na.rm = TRUE, plot = TRUE, verbosity = 2)
 }
 \arguments{
-  \item{model}{a model object of class implemented in \code{\link{mod2obspred}}. If this argument is provided, 'obs' and 'pred' will be extracted with that function. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
+  \item{model}{optional model object of class implemented in \code{\link{mod2obspred}}. If this argument is provided, 'obs' and 'pred' will be extracted with that function. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
   \item{obs}{alternatively to 'model' and together with 'pred', a numeric vector of observed values of the response variable. Alternatively (and if 'pred' is a 'SpatRaster'), a two-column matrix or data frame containing, respectively, the x (longitude) and y (latitude) coordinates of presence points, in which case the 'obs' vector of presences and absences will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
   \item{pred}{alternatively to 'model' and together with 'obs', a vector with the corresponding predicted values, of the same length and in the same order as 'obs'. Alternatively (and if 'obs' is a set of point coordinates), a 'SpatRaster' map of the predicted values for the entire evaluation region, in which case the 'pred' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
     \item{na.rm}{logical value indicating whether missing values should be ignored in computations. Defaults to TRUE.}
@@ -38,9 +38,9 @@ Lawson, C.R., Hodgson, J.A., Wilson, R.J., Richards, S.A., 2013. Prevalence, thr
 A. Marcia Barbosa
 }
 \seealso{
-\code{\link{logLik}}, \code{\link{MillerCalib}}, \code{\link{HLfit}},
+\code{\link{logLik}}, \code{\link{Miller}}, \code{\link{HLfit}},
 \code{\link{Boyce}}, \code{\link{RMSE}}, \code{\link{Dsquared}},
-\code{\link{RsqGLM}}
+\code{\link{pseudoRsq}}
 }
 \examples{
 # load sample models:

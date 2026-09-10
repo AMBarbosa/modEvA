@@ -11,8 +11,8 @@ mod2obspred(model, obs.only = FALSE, x.only = FALSE)
 }
 \arguments{
   \item{model}{a model object of class "glm", "gam", "gbm", "GBMFit", "randomForest" or "bart" from which the response variable and fitted (predicted) values can be extracted. Note that, for "randomForest" models, only the out-of-bag prediction is available from the model object (see \code{?randomForest::predict.randomForest}), so here you'll get different results if you provide 'model' or the modelled 'obs' (and corresponding 'pred') values.}
-  \item{obs.only}{logical value (default FALSE) indicating whether only 'obs' should be obtained. Saves computing time when 'pred' not needed. Used e.g. by \code{\link{prevalence}}).}
-  \item{x.only}{logical value (default FALSE) indicating whether only 'x' or 'data' (the predictor values) should be obtained. Used e.g. by \code{\link{varImp}} if imp.type = "permutation".}
+  \item{obs.only}{logical value (default FALSE) indicating whether only 'obs' should be returned. Reduces computation when 'pred' is not needed. Used e.g. by \code{\link{prevalence}}).}
+  \item{x.only}{logical value (default FALSE) indicating whether only 'x' or 'data' (the predictor values) should be returned. Used e.g. by \code{\link{varImp}} if imp.type = "permutation", or by \code{clampVars()} in package \pkg{fuzzySim} if 'ref' is a model object.}
 }
 \value{
 A data frame with one column containing the observed and (if obs.only=FALSE, the default) another column containing the predicted values from 'model'; or a data frame with the 'x', 'data' or predictor values from 'model' (if x.only=TRUE).

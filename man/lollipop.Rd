@@ -6,14 +6,14 @@ This function creates a lollipop chart (by default), a points chart (if \code{st
 }
 \usage{
   lollipop(x, names = NULL, ymin = 0, ylim = "auto0", sticks = TRUE, 
-  col = "royalblue4", grid = TRUE, cex = 1, cex.axis = 1, las = 2, 
+  col = "steelblue4", grid = TRUE, cex = 1, cex.axis = 1, las = 2, 
   horiz = FALSE, bold = FALSE, ...)
 }
 \arguments{
   \item{x}{a numeric vector.}
   \item{names}{a vector of the same length as 'x' with the names to be plotted below the lollipops. If this argument is left NULL and 'x' has names, then these will be used.}
   \item{ymin}{numeric value for the lower limit of the y axis (default 0). If set to NA, the minimum of 'x' will be used. This argument is deprecated, as it is now superseded by, and should be replaced with, 'ylim' (below).}
-  \item{ylim}{either a numeric vector of length 2 specifying the limits (minimum, maximum) for the y axis; or "auto" to fit the y axis to the minimum and maximum existing values in 'x'; or "auto0" (the new default) to fit the top of the y axis to the maximum existing values, and the bottom to zero or the minimum existing value (whichever is lower). If \code{horiz} is TRUE, these limits refer instead to the x axis.}
+  \item{ylim}{either a numeric vector of length 2 specifying the limits (minimum, maximum) for the y axis; or "auto" to fit the y axis to the minimum and maximum existing values in 'x'; or "auto0" (the new default) to fit the top of the y axis to the maximum existing value, and the bottom to zero or the minimum existing value (whichever is lower). If \code{horiz} is TRUE, these limits refer instead to the x axis.}
   \item{sticks}{either a logical value indicating whether the sticks of the lollipops (lines from zero to each value) should be drawn (default TRUE); or a two-column matrix or dataframe with one row for each element in x, with the minimum and maximum values for the error bars or confidence intervals (in which case a point-range chart is drawn).}
   \item{col}{colour for the lollipops.}
   \item{grid}{logical value (default TRUE) indicating whether or not to add a grid to the plot.}
@@ -28,7 +28,7 @@ This function creates a lollipop chart (by default), a points chart (if \code{st
   According to modern data viz recommendations, lollipop charts (or instead point charts) are generally a better alternative to bar charts, as they reduce the visual distortion caused by the length of the bars, making it easier to visually compare the values.
 }
 \value{
-  A plot.
+  NULL, with a plot as side effect.
 }
 \author{
   A. Marcia Barbosa

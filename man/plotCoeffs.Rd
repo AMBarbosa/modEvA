@@ -8,8 +8,8 @@
   plotCoeffs(model, labels = NULL, plot = TRUE, ...)
 }
 \arguments{
-  \item{model}{A model object of class "glm", "lm" or "phylolm".}
-  \item{labels}{Optional two-column matrix or data frame, with the first column containing names of variables that appear in 'model' (in no particular order), and the second column containing the corresponding names to use as labels in the plot. Can be useful when the model contains abbreviated variable names, and you want more complete variable names in the plot.}
+  \item{model}{A model object whose summary() coefficients table has column names matching (case-insensitive) "estimate", "err" and "P" - e.g., of class "glm", "lm", "phylolm" or "glmerMod".}
+  \item{labels}{Optional two-column matrix or data frame, with the first column containing names of variables included in 'model' (in no particular order), and the second column containing the corresponding names to use as labels in the plot. Can be useful when the model contains abbreviated variable names, and you want more complete variable names in the plot.}
   \item{plot}{Logical value. If set to FALSE, only the results data frame is produced, and no plot.}
   \item{...}{(If plot=TRUE) additional arguments to pass to \code{\link{lollipop}}, e.g. horizontal = TRUE.}
 }
@@ -25,7 +25,7 @@
   A. Marcia Barbosa
 }
 \seealso{
-  \code{\link{varImp}}, \code{\link{lollipop}}
+  \code{\link{varImp}}, \code{\link{lollipop}}, \code{\link{confint}}
 }
 \examples{
 # get example model:
@@ -50,5 +50,5 @@ labels <- data.frame(
 par(mar = c(3, 10, 2, 1))
 
 plotCoeffs(mod, horiz = TRUE, cex = 2, grid = FALSE, axis.lab = "Coefficients", 
-main = "Transmission", labels = labels, col = "purple")
+main = "Transmission", labels = labels, col = "darkturquoise")
 }

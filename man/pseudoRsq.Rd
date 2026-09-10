@@ -10,14 +10,14 @@ plot = TRUE, plot.type = "lollipop", na.rm = TRUE, rm.dup = FALSE,
 verbosity = 2, ...)
 }
 \arguments{
-  \item{model}{a binary-response model object of class "glm". Alternatively, you can input the 'obs' and 'pred' values of any other binary-response model.}
+  \item{model}{optional binary-response model object of class "glm". Alternatively, you can input the 'obs' and 'pred' values of any other binary-response model.}
   \item{obs}{alternatively to 'model' and together with 'pred', a vector of observed presences (1) and absences (0) of a binary response variable. Alternatively (and if 'pred' is a 'SpatRaster'), a two-column matrix or data frame containing, respectively, the x (longitude) and y (latitude) coordinates of the presence points, in which case the 'obs' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
   \item{pred}{alternatively to 'model' and together with 'obs', a numeric vector with the corresponding predicted values of presence probability. Must be of the same length and in the same order as 'obs'. Alternatively (and if 'obs' is a set of point coordinates), a 'SpatRaster' map of the predicted values for the entire evaluation region, in which case the 'pred' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
-  \item{use}{argument to be passed to \code{\link{cor}} for handling mising values.}
-  \item{plot}{logical value indicating whether or not to display a bar chart or (by default) a lollipop chart of the calculated measures.}
-  \item{plot.type}{character value indicating the type of plot to produce (if plot=TRUE). Can be "\code{\link{lollipop}}" (the default) or "\code{\link{barplot}}".}
-  \item{na.rm}{Logical value indicating whether missing values should be ignored in computations. Defaults to TRUE.}
-  \item{rm.dup}{If \code{TRUE} and if 'pred' is a SpatRaster and if there are repeated points within the same pixel, a maximum of one point per pixel is used to compute the presences. See examples in \code{\link{ptsrast2obspred}}. The default is FALSE.}
+  \item{use}{argument to pass to \code{\link{cor}} for handling mising values.}
+  \item{plot}{logical value indicating whether or not to display a bar chart or (by default) a lollipop chart of the output measures.}
+  \item{plot.type}{(if plot=TRUE) character value indicating the type of plot to produce. Can be "\code{\link{lollipop}}" (the default) or "\code{\link{barplot}}".}
+  \item{na.rm}{Logical value (default TRUE) indicating whether missing values should be ignored in computations.}
+  \item{rm.dup}{Logical, default FALSE. If \code{TRUE} and if 'pred' is a SpatRaster and if there are >1 points within the same pixel, a maximum of one point per pixel is used to compute the presences (see Examples in \code{\link{ptsrast2obspred}}).}
   \item{verbosity}{integer specifying the amount of messages to display. Defaults to the maximum implemented; lower numbers (down to 0) decrease the number of messages.}
   \item{\dots}{additional arguments to pass to the plotting function (see Examples).}
 }
@@ -42,7 +42,7 @@ Nagelkerke, N.J.D. (1991) A note on a general definition of the coefficient of d
 Tjur T. (2009) Coefficients of determination in logistic regression models - a new proposal: the coefficient of discrimination. The American Statistician, 63: 366-372.
 }
 \author{A. Marcia Barbosa}
-\seealso{\code{\link{Dsquared}}, \code{\link{AUC}}, \code{\link{threshMeasures}}, \code{\link{HLfit}}, \code{\link{MillerCalib}}}
+\seealso{\code{\link{Dsquared}}, \code{\link{AUC}}, \code{\link{threshMeasures}}, \code{\link{HLfit}}, \code{\link{Miller}}}
 \examples{
 # load sample models:
 data(rotif.mods)

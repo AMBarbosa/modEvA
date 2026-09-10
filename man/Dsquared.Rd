@@ -12,7 +12,7 @@ adjust = FALSE, npar = NULL, na.rm = TRUE, rm.dup = FALSE, pbg = FALSE,
 dismo.version = FALSE, verbosity = 2)
 }
 \arguments{
-  \item{model}{a model object of a class implemented in \code{\link{mod2obspred}}. If this argument is provided, 'obs' and 'pred' will be extracted with that function. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
+  \item{model}{optional model object of a class implemented in \code{\link{mod2obspred}}. If this argument is provided, 'obs' and 'pred' will be extracted with that function. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
   \item{obs}{alternatively to 'model' and together with 'pred', a numeric vector of observed values of the response variable. Alternatively (and if 'pred' is a 'SpatRaster'), a two-column matrix or data frame containing, respectively, the x (longitude) and y (latitude) coordinates of presence points, in which case the 'obs' vector of presences and absences will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
   \item{pred}{alternatively to 'model' and together with 'obs', a vector with the corresponding predicted values, of the same length and in the same order as 'obs'. Alternatively (and if 'obs' is a set of point coordinates), a 'SpatRaster' map of the predicted values for the entire evaluation region, in which case the 'pred' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
   \item{family}{a character vector (i.e. in quotes) of length 1 specifying the family of the model that generated the 'pred' values. This argument is ignored if \code{model} is provided and is of a class for which \code{\link{family}} provides a result; otherwise (i.e. if 'obs' and 'pred' are provided rather than a model object), family can be specified by the user, or (if left NULL) will be guessed (with a message) given the values of the response variable.}
@@ -41,7 +41,7 @@ Weisberg, S. (1980) Applied Linear Regression. Wiley, New York
 A. Marcia Barbosa, with parts of code from 'dismo::calc.deviance' by John R. Leathwick and Jane Elith
 }
 \seealso{
-\code{\link{plotGLM}}, \code{\link{RsqGLM}}, \code{dismo::calc.deviance}
+\code{\link{plotGLM}}, \code{\link{pseudoRsq}}, \code{dismo::calc.deviance}
 }
 \examples{
 # load sample models:

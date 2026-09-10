@@ -13,11 +13,11 @@ ylab = "Predicted probability", main = "Model plot", na.rm = TRUE,
 rm.dup = FALSE, verbosity = 2, ...)
 }
 \arguments{
-  \item{model}{a binary-response model object of class "\code{\link{glm}}". If this argument is provided, 'obs' and 'pred' will be extracted with \code{\link{mod2obspred}}. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
+  \item{model}{optional binary-response model object of class "\code{\link{glm}}". If this argument is provided, 'obs' and 'pred' will be extracted with \code{\link{mod2obspred}}. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
   \item{obs}{alternatively to 'model' and together with 'pred', a numeric vector of observed presences (1) and absences (0) of a binary response variable. Alternatively (and if 'pred' is a 'SpatRaster'), a two-column matrix or data frame containing, respectively, the x (longitude) and y (latitude) coordinates of the presence points, in which case the 'obs' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
   \item{pred}{alternatively to 'model' and together with 'obs', a numeric vector with the corresponding predicted values of presence probability, habitat suitability, environmental favourability or alike. Must be of the same length and in the same order as 'obs'. Alternatively (and if 'obs' is a set of point coordinates), a 'SpatRaster' map of the predicted values for the entire evaluation region, in which case the 'pred' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
   \item{link}{the link function of the GLM; only 'logit' (the default) is implemented.}
-  \item{plot.values}{logical, whether to include in the plot diagnostic values such as explained deviance (calculated with the \code{\link{Dsquared}} function) and pseudo-R-squared measures (calculated with the \code{\link{RsqGLM}} function). Defaults to TRUE.}
+  \item{plot.values}{logical, whether to include in the plot diagnostic values such as explained deviance (calculated with the \code{\link{Dsquared}} function) and pseudo-R-squared measures (calculated with the \code{\link{pseudoRsq}} function). Defaults to TRUE.}
    \item{plot.digits}{integer number indicating the number of digits to which the values in the plot should be \code{\link{round}}ed (if 'plot.values = TRUE'). Defaults to 3.}
   \item{xlab}{character string specifying the label for the x axis.}
   \item{ylab}{character string specifying the label for the y axis.}

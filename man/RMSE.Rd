@@ -11,7 +11,7 @@ RMSE(model = NULL, obs = NULL, pred = NULL, na.rm = TRUE, rm.dup = FALSE,
 verbosity = 2)
 }
 \arguments{
-  \item{model}{a model object of class implemented in \code{\link{mod2obspred}}. If this argument is provided, 'obs' and 'pred' will be extracted with that function. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
+  \item{model}{optional model object of class implemented in \code{\link{mod2obspred}}. If this argument is provided, 'obs' and 'pred' will be extracted with that function. Alternatively, you can input the 'obs' and 'pred' arguments instead of 'model'.}
   \item{obs}{alternatively to 'model' and together with 'pred', a numeric vector of observed values of the response variable. Alternatively (and if 'pred' is a 'SpatRaster'), a two-column matrix or data frame containing, respectively, the x (longitude) and y (latitude) coordinates of presence points, in which case the 'obs' vector of presences and absences will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
   \item{pred}{alternatively to 'model' and together with 'obs', a vector with the corresponding predicted values, of the same length and in the same order as 'obs'. Alternatively (and if 'obs' is a set of point coordinates), a 'SpatRaster' map of the predicted values for the entire evaluation region, in which case the 'pred' vector will be extracted with \code{\link{ptsrast2obspred}}. This argument is ignored if 'model' is provided.}
     \item{na.rm}{Logical value indicating whether missing values should be ignored in computations. Defaults to TRUE.}
@@ -31,7 +31,7 @@ Kenney J.F. & Keeping E.S. (1962) Root Mean Square. "Mathematics of Statistics",
 A. Marcia Barbosa
 }
 \seealso{
-\code{errorMeasures}, \code{\link{plotGLM}}, \code{\link{RsqGLM}}, \code{Dsquared}
+\code{errorMeasures}, \code{\link{plotGLM}}, \code{\link{pseudoRsq}}, \code{Dsquared}
 }
 \examples{
 # load sample models:

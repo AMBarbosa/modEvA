@@ -12,9 +12,9 @@ measures = modEvAmethods("multModEv"), standardize = FALSE,
 thresh = NULL, bin.method = NULL, verbosity = 0, ...)
 }
 \arguments{
-  \item{models}{a list of model object(s) of class "glm", all applied to the same data set. Evaluation is based on the cases included in the models.}
-  \item{obs.data}{a data frame with observed (training or test) binary data. This argument is ignored if 'models' is provided.}
-  \item{pred.data}{a data frame with the corresponding predicted (training or test) values, with both rows and columns in the same order as in 'obs.data'. This argument is ignored if 'models' is provided. Note that, for calibration measures (based on \code{\link{HLfit}} or \code{\link{MillerCalib}}), the results are only valid if the input predictions represent probability.}
+  \item{models}{optional list of model object(s) of class "glm", all applied to the same data set. Evaluation is based on the cases included in the models.}
+  \item{obs.data}{alternatively to 'models' and together with 'pred.data', a data frame with observed (training or test) binary data (1 for presence, 0 for absence of records). This argument is ignored if 'models' is provided.}
+  \item{pred.data}{alternatively to 'models' and together with 'obs.data', a data frame with the corresponding predicted (training or test) values, with both rows and columns in the same order as in 'obs.data'. This argument is ignored if 'models' is provided. Note that some calibration measures (e.g. \code{\link{HLfit}}, \code{\link{Miller}}) assume that predictions represent probability, while others (e.g. \code{\link{Boyce}}) assume suitability or favourability.}
   \item{measures}{character vector of the evaluation measures to calculate. The default is all implemented measures, which you can check by typing 'modEvAmethods("multModEv")'. But beware: calibration measures (i.e., HL and Miller) are only valid if your predicted values reflect actual presence probability (not favourability, habitat suitability or others); you should exclude them otherwise.}
   \item{standardize}{logical, whether to standardize measures that vary between -1 and 1 to the 0-1 scale (see \code{\link{standard01}}). The default is FALSE.}
   \item{thresh}{argument to pass to \code{\link{threshMeasures}} if any of 'measures' is calculated by that function. The default is NULL, but a valid method must be specified if any of 'measures' is threshold-based - i.e., any of those in 'modEvAmethods("threshMeasures")'.}

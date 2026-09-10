@@ -4,7 +4,7 @@
 Get model equation
 }
 \description{
-This function retrieves the equation of a model, to print or apply elsewhere.
+This function retrieves the regression equation of a linear or generalized linear model, to print or apply elsewhere.
 }
 \usage{
 getModEqn(model, type = "Y", digits = NULL, prefix = NULL, 
@@ -28,7 +28,7 @@ the suffix to add to each variable name in the equation.
 }
 }
 \details{
-The summary of a model in R gives you a table of the coefficient estimates and other parameters. Sometimes it may be useful to have a string of text with the model's equation, so that you can present it in an article (e.g. Real et al. 2005) or apply it in a (raster map) calculation, either in R (although here you can usually use the 'predict' function for this) or in a GIS software (e.g. Barbosa et al. 2010). The \code{getModEqn} function gets this equation for linear or generalized linear models.
+The summary of a model in R gives you a table of the coefficient estimates and other parameters. Sometimes it may be useful to have a string of text with the model's equation, so that you can present it in an article (e.g. Real et al. 2005) or apply it in a (raster map) calculation, either in R (although here you can normally use the 'predict' function for this) or in another GIS software (e.g. Barbosa et al. 2010). The \code{getModEqn} function gets this equation for linear or generalized linear models.
 
 By default it prints the \code{"Y"} linear equation, but for generalized linear models you can also set \code{type = "P"} (for the equation of probability) or \code{type = "F"} (for favourability, which modifies the intercept to eliminate the effect of modelled prevalence - see Real et al. 2006).
 
