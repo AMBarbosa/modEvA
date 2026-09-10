@@ -1,5 +1,8 @@
 exportPattern("^[[:alpha:]]+")
 
+importFrom("effectsize",
+           "rank_biserial")
+
 importFrom("graphics",
            "abline", "arrows", "axis", "barplot", "box", "boxplot", "hist", 
            "legend", "lines", "mtext", "par", "plot", "plot.default", "points", 
@@ -10,9 +13,10 @@ importFrom("grDevices",
 
 importFrom("stats",
            "aggregate", "approx", "approxfun", "as.formula", "binomial",
-           "complete.cases", "cor", "density", "family", "glm", "integrate",
-           "lm", "logLik", "median", "na.omit", "pchisq", "qf", "quantile",
-           "qnorm", "resid", "sd", "xtabs", "fitted", "predict")
+           "complete.cases", "cor", "cor.test", "density", "family", "glm", 
+           "integrate", "ks.test", "lm", "logLik", "median", "na.omit", "pchisq", 
+           "qf", "quantile", "qnorm", "resid", "runif", "sd", "xtabs", "fitted", 
+           "predict", "wilcox.test")
 
 importFrom("terra",
            "nlyr", "rasterize", "values")

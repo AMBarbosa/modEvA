@@ -1,13 +1,13 @@
 Package: modEvA
 Type: Package
 Title: Model Evaluation and Analysis
-Version: 3.41
-Date: 2026-01-08
+Version: 3.46
+Date: 2026-08-04
 Authors@R: c(person(given = c("A.", "Marcia"),
                       family = "Barbosa",
                       role = c("aut", "cre"),
                       email = "ana.marcia.barbosa@gmail.com"),
-               person(given = "Jennifer A.",
+               person(given = c("Jennifer", "A."),
                       family = "Brown",
                       role = "aut"),
                person(given = "Alberto",
@@ -31,11 +31,15 @@ Authors@R: c(person(given = c("A.", "Marcia"),
                person(given = "Carola",
                       family = "Gomez-Rodriguez",
                       role = "ctb"),
+               person(given = c("Carlos", "C."),
+                      family = "Ramos",
+                      role = "ctb"),
                person(given = c("Jose", "Carlos"),
                       family = "Guerrero",
                       role = "fnd"))
 Maintainer: A. Marcia Barbosa <ana.marcia.barbosa@gmail.com>
-Imports: graphics,
+Imports: effectsize,
+         graphics,
          grDevices,
          stats,
          terra (> 1.5-50)

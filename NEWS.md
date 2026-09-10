@@ -1,4 +1,143 @@
-# Version 3.41
+# Version 3.47
+#### (Committed 2026-  -  )
+
+### Modified functions:
+
+* varImp
+    - fix bugs when horiz = TRUE
+
+
+# Version 3.46 -> CRAN
+#### (Committed 2026-08-04)
+
+### Modified functions:
+
+* varImp
+    - implement "each" for GAM (with warning)
+
+* HLfit
+    - include 'HLI' in output also when simplif = TRUE
+
+* plotCoeffs
+    - add dashed dark-red abline() where coefficients = 0
+
+
+### Other modified files:
+
+* plotCoeffs.Rd
+    - improve 'model' argument description to reflect that it accommodates more classes
+    - add confint() to SeeAlso
+
+* mod2obspred.Rd
+    - mention use by fuzzySim::clampVars()
+    
+    
+# Version 3.45 -> CRAN
+#### (Committed 2026-04-21)
+
+### Modified functions:
+
+* Miller
+    - add "MCA" output (inverse standardized slope difference)
+    - change 'plot.values' shown
+    - add 'values.col' argument
+
+* getBins
+    - show also empty bins
+
+* HLfit
+    - add 'HLI' output (inverse standardized HL index)
+    - fix error when empty bins
+    - change 'plot.values' shown
+    - add 'values.col' argument
+    - move 'simplif' code to after 'plot', so that both can be TRUE
+    - bin size red for small bins
+    - reduce bin size cex, and add transparency for overlaps
+    - change plot colours, par('mgp') and axis limits to better match other functions
+
+* Boyce
+    - add "xlim" and "ylim" arguments
+
+* AUC, Boyce, Miller
+    - format plot value to show 3 decimals even if 0
+
+* poMeasures
+    - accommodate 'pred' values outside [0, 1] (with warning)
+
+
+# Version 3.44
+#### (Committed 2026-04-29)
+
+### Modified functions:
+
+* evaluate (benefiting threshMeasures)
+    - fix bug in SEDI computation
+
+* threshMeasures
+    - add SEDI to (optionally) standardized measures
+    - non-finite measures also in plot
+
+
+### Other modified files:
+
+* threshMeasures.Rd
+    - list, define and cite output measures
+
+
+# Version 3.43
+#### (Committed 2026-04-17)
+
+### Modified functions:
+
+* getBins
+    - fix bug (extra bin at the end) when bin.method="mov.bins" & !is.na(n.bins)
+
+* predDensity
+    - add 'bw' arg to pass to density()
+    - add wilcox.test() and ks.test() of pred1 vs pred0 (if separate=TRUE)
+
+* Boyce
+    - red-flag small bins under 15 (not 30) values, as per biblio now cited in help file
+
+* Boyce, poMeasures
+    - add 'simplif' argument
+    - improve plot value placement
+
+* several functions producing plots
+    - change colours to steel blues and slate greys
+
+
+### Other modified files:
+
+* most .Rd files
+    - explicitly add "optional" at the beginning of the 'model' argument descriptions
+
+* AUC.Rd
+    - mention AUC-PR flaw and add reference to the alternative Precision-Recall-Gain curve
+
+
+# Version 3.42
+#### (Committed 2026-02-27)
+
+### New functions:
+
+* poMeasures
+    - experimental, under review
+
+
+### Modified functions:
+
+* MillerCalib
+    - renamed to Miller
+
+
+### Other modified files:
+
+* CITATION
+    - add citation of package with self-updating version and year
+
+    
+# Version 3.41 -> CRAN
 ## (Committed 2026-01-08)
 
 ### Modified functions:
@@ -575,7 +714,7 @@
 ### Modified functions:
 
 * confusionMatrix
-    - add arguments plot=TRUE, classes=FALSE and ...
+    - add arguments plot=TRUE, classes=FALSE and '...'
 
 
 
@@ -587,7 +726,7 @@
 
 * confusionLabel
     - assign consistent colours to output raster categories
-    - add plot=TRUE and ... arguments
+    - add plot=TRUE and '...' arguments
 
 
 
@@ -604,7 +743,7 @@
 ## Other modified files:
 
 * AUC.Rd
-    - unimplemented argument 'FPR.limits' now suggests using 'pROC::roc'
+    - not-yet-implemented argument 'FPR.limits' now suggests using 'pROC::roc'
 
 
 
@@ -1006,7 +1145,7 @@
 * Boyce
     - warning emitted and points coloured red for bins with less than 30 values
 
-* standard01 (benefitting threshMeasures)
+* standard01 (benefiting threshMeasures)
     - added is.finite(score) to avoid error when NAs produced by kappa integer overflow
 
 * getThreshold, inputMunch
