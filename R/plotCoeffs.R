@@ -47,6 +47,12 @@ plotCoeffs <- function(model, labels = NULL, plot = TRUE, ...) {
            ...)
   box()
   
+  # if (missing("horiz"))
+  abline(v = 0, lty = 2, col = "darkred")
+  # else if (horiz == TRUE)  
+    abline(h = 0, lty = 2, col = "darkred")
+
+  
   out <- data.frame(Variable = rownames(Coefficients),
                     Coefficient = Coefficients[,1], 
                     StdError = se[,1], 

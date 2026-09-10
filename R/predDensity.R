@@ -1,5 +1,5 @@
-predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, type = "both", ci = NA, pbg = FALSE, legend.pos = "topright", main = "Density of pred values", na.rm = TRUE, rm.dup = FALSE, xlim = NULL, verbosity = 2, ...) {
-  # version 1.8 (28 Oct 2024)
+predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, type = "both", ci = NA, pbg = FALSE, bw = "nrd0", legend.pos = "topright", main = "Density of pred values", na.rm = TRUE, rm.dup = FALSE, xlim = NULL, verbosity = 2, ...) {
+  # version 2.0 (30 Mar 2026)
 
   stopifnot(is.null(xlim) || (is.numeric(xlim) && is.finite(xlim) && length(xlim) == 2))
 
@@ -44,14 +44,14 @@ predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, 
 
   if (type %in% c("density", "both")) {  # "density" %in% type
     if (!separate) {
-      dens <- density(pred)
+      dens <- density(pred, bw = bw)
       xrange <- xlim
       if (is.null(xlim)) xrange <- range(dens$x, finite = TRUE)
       yrange <- range(dens$y, finite = TRUE)
       rslt[["density"]] <- dens
     } else {
-      dens0 <- density(pred0)
-      dens1 <- density(pred1)
+      dens0 <- density(pred0, bw = bw)
+      dens1 <- density(pred1, bw = bw)
       xrange <- xlim
       if (is.null(xlim)) xrange <- range(c(dens0$x, dens1$x), finite = TRUE)
       yrange <- range(dens0$y, dens1$y, finite = TRUE)
@@ -75,25 +75,25 @@ predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, 
       plot(x = xrange, y = yrange, type = "n", xlab = "Pred value", ylab = "Density", main = main)
     }
     if (!separate) {
-      histogram <- hist(c(pred0, pred1), freq = FALSE, col = "darkblue", add = TRUE, ...)
+      histogram <- hist(c(pred0, pred1), freq = FALSE, col = "steelblue4", add = TRUE, ...)
       rslt[["histogram"]] <- histogram
     } else {
-      hist(pred1, freq = FALSE, col = "darkblue", add = TRUE, ...)
-      hist(pred0, freq = FALSE, col = "paleturquoise", density = 40, angle = 45, add = TRUE, ...)
+      hist(pred1, freq = FALSE, col = "steelblue4", add = TRUE, ...)
+      hist(pred0, freq = FALSE, col = "lightblue3", density = 40, angle = 45, add = TRUE, ...)
       rslt[["histogram_obs1"]] <- hist1
       rslt[["histogram_obs0"]] <- hist0
-      if (legend.pos != "n" && type == "histogram") legend(legend.pos, legend = lgd, cex = 0.8, fill = c("paleturquoise", "darkblue"), border = c("paleturquoise", "black"), density = c(40, NA), text.col = "plum4", bty = "n")
+      if (legend.pos != "n" && type == "histogram") legend(legend.pos, legend = lgd, cex = 0.8, fill = c("lightblue3", "steelblue4"), border = c("lightblue3", "black"), density = c(40, NA), text.col = "plum4", bty = "n")
     }
   }
 
   if (type %in% c("density", "both")) {  # "density" %in% type
     if (!separate) {
-      lines(dens, col = "navyblue", lwd = 2)
+      lines(dens, col = "midnightblue", lwd = 2)
     } else {
-      lines(dens1, col = "navyblue", lwd = 2)
-      lines(dens0, col = "darkturquoise", lty = 5, lwd = 2)
-      if (!is.na(legend.pos) && legend.pos != "n" && type == "density") legend(legend.pos, legend = lgd, cex = 0.8, col = c("darkturquoise", "navyblue"), lty = c(5, 1), text.col = "plum4", bty = "n")
-      if (!is.na(legend.pos) && legend.pos != "n" && type == "both") legend(legend.pos, legend = lgd, cex = 0.8, fill = c("paleturquoise", "darkblue"), border = c("paleturquoise", "navyblue"), lty = c(5, 1), col = c("darkturquoise", "navyblue"), density = c(40, NA), text.col = "plum4", bty = "n")
+      lines(dens1, col = "midnightblue", lwd = 2)
+      lines(dens0, col = "lightblue3", lty = 5, lwd = 2)
+      if (!is.na(legend.pos) && legend.pos != "n" && type == "density") legend(legend.pos, legend = lgd, cex = 0.8, col = c("lightblue3", "steelblue4"), lty = c(5, 1), text.col = "plum4", bty = "n")
+      if (!is.na(legend.pos) && legend.pos != "n" && type == "both") legend(legend.pos, legend = lgd, cex = 0.8, fill = c("lightblue3", "steelblue4"), border = c("lightblue3", "midnightblue"), lty = c(5, 1), col = c("lightblue3", "midnightblue"), density = c(40, NA), text.col = "plum4", bty = "n")
     }
   }
 
@@ -108,6 +108,14 @@ predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, 
     abline(v = mean(pred), lwd = 2, col = "darkgreen")
     # legend(legend.pos, legend = c("CI", "mean"), lty = c(NA, 1), col = c(NA, "darkgreen"), fill = c(ci.col, NA), border = NA, bty = "n")
     legend(legend.pos, legend = c("CI", "mean"), pch = c(15, NA), pt.cex = c(2, NA), lty = c(NA, 1), lwd = 2, col = c(ci.col, "darkgreen"), bty = "n")
+  }
+  
+  if (separate) {
+    rslt$wilcox <- wilcox.test(pred1, pred0)
+    if (verbosity > 0) print(rslt$wilcox)
+    
+    rslt$ks <- stats::ks.test(pred1, pred0)
+    if (verbosity > 0) print(rslt$ks)
   }
 
   return(rslt)

@@ -1,5 +1,5 @@
 threshMeasures <- function(model = NULL, obs = NULL, pred = NULL, thresh, measures = modEvAmethods("threshMeasures")[-grep("OddsRatio", modEvAmethods("threshMeasures"))], simplif = FALSE, pbg = FALSE, plot = TRUE, plot.type = "lollipop", ylim = "auto0", plot.ordered = FALSE, standardize = TRUE, verbosity = 2, interval = 0.01, quant = 0, na.rm = TRUE, rm.dup = FALSE, ...) {
-  # version 4.0 (19 Feb 2025)
+  # version 4.1 (28 Apr 2026)
   
   # if (is.null(model)) {
   #   if (is.null(obs) | is.null(pred)) stop ("You must provide either the 'obs' and 'pred' vectors, or a 'model' object.")
@@ -68,20 +68,33 @@ threshMeasures <- function(model = NULL, obs = NULL, pred = NULL, thresh, measur
   
   Nmeasures <- length(measures)
   measureValues <- as.vector(rep(NA, Nmeasures), mode = "numeric")
+  # non_confumat_measures <- intersect(c("AVI", "CVI"), measures)
+  # non_confumat_measures <- intersect(c("AVI_HA", "CVI_HA", "AVI_GTZ", "CVI_GTZ"), measures)  # Hirzel+Arlettaz vs. Guisan+Thuiller+Zimmermann
+  non_confumat_measures <- NULL
   
   for (i in 1:Nmeasures) {
     if (measures[i] == "AUC") measureValues[i] <- AUC(obs = obs, pred = pred, simplif = TRUE)
-    else if (measures[i] %in% modEvAmethods("threshMeasures") && is.finite(thresh)) {
-      measureValues[i] <- evaluate(a, b, c, d, measure = measures[i])  # , N
-      if (standardize == TRUE && measures[i] %in% c("TSS", "kappa", "ORSS")) {
+    else if (!(measures[i] %in% non_confumat_measures) && measures[i] %in% modEvAmethods("threshMeasures") && is.finite(thresh)) {
+      measureValues[i] <- evaluate(a, b, c, d, measure
+                                   = measures[i])  # , N
+      if (standardize == TRUE && measures[i] %in% c("TSS", "kappa", "ORSS", "SEDI")) {
         measureValues[i] <- standard01(measureValues[i])
         measures[i] <- paste("s", measures[i], sep = "")
-        if (verbosity > 0) message("\n", measures[i], " standardized to the 0-1 scale for direct comparability
+        if (verbosity > 0) message("\n", measures[i], " standardized to the [0, 1] scale for direct comparability
 with other measures (type '?standard01' for more info);
 use 'standardize = FALSE' if this is not what you wish")
       }  # end if standardize
-    }  # end if measures[i] in modEvAmethods("threshMeasures")
-    else {
+    } else if (measures[i] %in% non_confumat_measures && measures[i] %in% modEvAmethods("threshMeasures") && is.finite(thresh)) {  # https://github.com/hsdm-hub/hsdm (Guisan et al. 2017 textbook)
+      if (measures[i] %in% c("AVI", "CVI")) {
+        ob <- pred * obs
+        avi <- sum(ob > thresh) / length(ob)
+      }
+      if (measures[i] == "AVI") measureValues[i] <- avi
+      if (measures[i] == "CVI") {
+        avi0 <- sum(obs) / length(obs)
+        measureValues[i] <- avi0 - avi
+      }
+    } else {
       warning("'", measures[i], "' is not a valid measure;
 type modEvAmethods('threshMeasures') for available options.")
       next
@@ -101,13 +114,13 @@ type modEvAmethods('threshMeasures') for available options.")
     if (length(grep("auto", ylim)) > 0) {
       ymin <- min(measures.plot, na.rm = TRUE)
       if ("auto0" %in% ylim) ymin <- min(0, ymin)
-      ylim <- c(ymin, max(measures.plot))
+      ylim <- c(ymin, max(measures.plot, na.rm = TRUE))
     }
     
     if (plot.type == "barplot" && any(is.finite(measures.plot)))
-      barplot(measures.plot[is.finite(measures.plot)], las = 2, ylim = ylim, ...)
+      barplot(measures.plot, las = 2, ylim = ylim, ...)
     else if (plot.type == "lollipop" && any(is.finite(measures.plot)))
-      lollipop(measures.plot[is.finite(measures.plot)], las = 2, ylim = ylim, xlab = "", ylab = "", ...)
+      lollipop(measures.plot, las = 2, ylim = ylim, xlab = "", ylab = "", ...)
   }  # end if plot
   
   if (simplif) {  # shorter version for use with e.g. optiThresh function

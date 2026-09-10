@@ -115,7 +115,7 @@ multModEv <-
       
       if (any(measures %in% c("Miller.int", "Miller.slope"))) {
         for (m in 1:n.models) {
-          Miller <- MillerCalib(obs = obs.data[ , m], pred = pred.data[ , m], plot = FALSE)
+          Miller <- Miller(obs = obs.data[ , m], pred = pred.data[ , m], plot = FALSE)
           if ("Miller.int" %in% measures)
             results[m, "Miller.int"] <- Miller$intercept
           if ("Miller.slope" %in% measures)

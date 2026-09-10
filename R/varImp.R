@@ -1,6 +1,6 @@
 varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, group.cats = FALSE, n.per = 10, data = NULL, n.trees = 100, plot = TRUE, plot.type = "lollipop", error.bars = "sd", ylim = "auto0", col = c("steelblue4", "coral2"), plot.points = TRUE, legend = TRUE, grid = TRUE, verbosity = 2, ...) {
   
-  # version 3.0 (18 Sep 2025)
+  # version 3.2 (9 Sep 2026)
   
   # if 'col' has length 2 and varImp has negative values (e.g. for z-value), those will get the second colour
   
@@ -31,16 +31,39 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
     if (verbosity > 0) message ("'reorder' set to FALSE, as this version of 'flexBART' does not carry variable names, which would make it impossible to match variables with importance values. Variables are in the order in which they were provided to the 'flexBART' model, with the continuous preceding the categorical ones. Update 'flexBART' if you want the variables named and reordered.")
   }
   
-  
-  if ((inherits(model, c("Gam", "gam", "maxnet")) && imp.type == "each")) {
+  if (inherits(model, "maxnet") && imp.type == "each") {
     warning("'imp.type' changed to 'permutation', as 'each' is not implemented for this class of 'model'.")
     imp.type <- "permutation"
-  }  # this must come before glm; as gam is also class glm
-  
+  }  # keep separate to allow 'imp.type' change
   
   if (imp.type == "each") {
     
-    if (inherits(model, "glm")) {  #  && !inherits(model, "Gam")
+    if (inherits(model, c("gam", "Gam"))) {
+      warning("For GAM, this 'imp.type' uses the Chi-squared value of each smooth term, which may depend on its effective degrees of freedom (EDF) and scaling. Use with care, or consider changing 'imp.type'.")
+    }
+    
+    if (inherits(model, "Gam")) {  # before "glm" because "gam" also inherits "glm"
+      if ("gam" %in% .packages(all.available = TRUE)) {
+        metric <- ifelse(isTRUE(relative), "Relative Chi-sq value", "Absolute Chi-sq value")
+        if (verbosity > 1) cat("\nMetric:", metric, "\n\n")
+        varimp <- summary(model)$anova[-1, "Npar Chisq"]
+        names(varimp) <- rownames(summary(model)$anova[-1, ])
+        if (isTRUE(relative)) varimp <- varimp / sum(abs(varimp))
+        ylab <- metric
+      }
+    }
+    
+    else if (inherits(model, "gam")) {  # 'mgcv' pkg
+      if ("mgcv" %in% .packages(all.available = TRUE)) {
+        metric <- ifelse(isTRUE(relative), "Relative Chi-sq value", "Absolute Chi-sq value")
+        if (verbosity > 1) cat("\nMetric:", metric, "\n\n")
+        varimp <- summary(model)$chi.sq
+        if (isTRUE(relative)) varimp <- varimp / sum(abs(varimp))
+        ylab <- metric
+      }
+    }
+    
+    else if (inherits(model, "glm")) {  #  && !inherits(model, "Gam")
       
       if (family(model)$family != "binomial")  stop ("This function is currently only implemented for binary-response models of family 'binomial'.")
       
@@ -206,8 +229,8 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
     if (is.null(data)) {
       data <- as.data.frame(mod2obspred(model, x.only = TRUE))
       names(data) <- gsub("s\\(|\\)", "", names(data))  # for gam models
-  }
-
+    }
+    
     # remove column attributes to avoid GAM error:
     data[] <- lapply(data, function(x) { attributes(x) <- NULL; x })
     
@@ -279,6 +302,10 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
   
   if (plot) {
     plot.args <- list(...)  # https://www.r-bloggers.com/2020/11/some-notes-when-using-dot-dot-dot-in-r/
+    if ("horizontal" %in% names(plot.args)) {
+      plot.args$horiz <- plot.args$horizontal
+      plot.args$horizontal <- NULL
+    }
     if (!("horiz" %in% names(plot.args)))
       plot.args$horiz <- FALSE
     if (!("xlab" %in% names(plot.args)))
@@ -310,27 +337,30 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
                 plot.args))
       
       if (!is.na(error.bars)) {
-        arrows(x0 = 1:length(varimp), x1 = 1:length(varimp), y0 = eb_lower, y1 = eb_upper, code = 3, angle = 90, length = 0.03, col = colrs)
+        if (isTRUE(plot.args$horiz)) {
+          arrows(y0 = 1:length(varimp), y1 = 1:length(varimp), x0 = eb_lower, x1 = eb_upper, code = 3, angle = 90, length = 0.03, col = colrs)
+        } else {
+          arrows(x0 = 1:length(varimp), x1 = 1:length(varimp), y0 = eb_lower, y1 = eb_upper, code = 3, angle = 90, length = 0.03, col = colrs)
+        }
       }
     }  # end if lollipop
     
-    
     if (plot.type == "barplot") {
-      
       space <- 0.25  # re-used if plot.points & error.bars
       
-      do.call(barplot,
-              c(list(height = abs(varimp),
-                     col = colrs,
-                     border = NA,
-                     space = space,
-                     names = names(varimp),
-                     ylim = ylim,
-                     xpd = FALSE,
-                     las = 2),
-                plot.args
-              )
-      )
+      bp <- do.call(barplot,
+                    c(list(height = abs(varimp),
+                           col = colrs,
+                           border = NA,
+                           space = space,
+                           names = names(varimp),
+                           xpd = FALSE,
+                           las = 2),
+                      if (isTRUE(plot.args$horiz))
+                        list(xlim = ylim)
+                      else
+                        list(ylim = ylim),
+                      plot.args))
       
       if (grid) grid()
       
@@ -340,30 +370,51 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
       }
       
       if (!is.na(error.bars)) {
-        arrows(x0 = xbars, x1 = xbars, y0 = eb_lower, y1 = eb_upper, angle = 90, code = 3, length = 0.03, col = "#10133a")
+        if (isTRUE(plot.args$horiz)) {
+          arrows(x0 = eb_lower, x1 = eb_upper,
+                 y0 = bp, y1 = bp,
+                 angle = 90, code = 3, length = 0.03, col = "#10133a")
+        } else {
+          arrows(x0 = bp, x1 = bp,
+                 y0 = eb_lower, y1 = eb_upper,
+                 angle = 90, code = 3, length = 0.03, col = "#10133a")
+        }
       }
     }  # end if barplot
     
-    
     if (plot.type == "boxplot") {
-      if(is.na(error.bars)) vi <- t(as.data.frame(abs(varimp))) else vi <- varimps  # ifelse makes single boxplot for all vars
+      if (is.na(error.bars))
+        vi <- t(as.data.frame(abs(varimp)))
+      else
+        vi <- varimps
       
-      boxplot(vi,
-              col = adjustcolor(colrs, alpha.f = 0.2),
-              border = colrs,
-              ylab = ylab,
-              ylim = ylim,
-              las = 2,
-              ...)
+      bxp.args <- plot.args
+      bxp.args$horizontal <- plot.args$horiz
+      bxp.args$horiz <- plot.args$horizontal
+      
+      do.call(boxplot,
+              c(list(x = vi,
+                     col = adjustcolor(colrs, alpha.f = 0.2),
+                     border = colrs,
+                     ylim = ylim,
+                     las = 2),
+                bxp.args))
       
       if (grid) grid()
     }  # end if boxplot
+    
     
     if (plot.points && (is_bart || is_flexbart)) {
       if (plot.type == "barplot") xx <- rep(xbars, each = nrow(varimps))
       else xx <- rep(1:ncol(varimps), each = nrow(varimps))
       jj <- sapply(xx, jitter, amount = 0.1)
-      points(x = jj, y = as.matrix(varimps), pch = 20, cex = 0.1, col = adjustcolor("#ffaabb", alpha.f = 0.3))
+      
+      if (isTRUE(plot.args$horiz)) {
+        points(x = as.matrix(varimps), y = jj, pch = 20, cex = 0.1, col = adjustcolor("#ffaabb", alpha.f = 0.3))
+      } else {
+        points(x = jj, y = as.matrix(varimps), pch = 20, cex = 0.1, col = adjustcolor("#ffaabb", alpha.f = 0.3))
+      }
+      
       if (plot.type == "lollipop") {
         points(abs(varimp), pch = 20, col = colrs)
         arrows(x0 = 1:length(varimp), x1 = 1:length(varimp), y0 = eb_lower, y1 = eb_upper, code = 3, angle = 90, length = 0.03, col = colrs)

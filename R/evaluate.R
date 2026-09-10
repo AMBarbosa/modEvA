@@ -6,8 +6,8 @@ evaluate <-
     # a, b, c, d: elements of the confusion matrix (TP, FP, FN, TN)
     # N: sample size (total number of observations); calculated automatically if NULL
     # measure: evaluation measure to use
-    # note: TSS and NMI are not symmetrical ("obs" vs "pred" != "pred" vs "obs")
-    # note that some measures (e.g. NMI, odds ratio) don't work with zeros in (some parts of) the confusion matrix
+    # note: some measures (e.g. TSS, NMI) are not symmetrical ("obs" vs "pred" != "pred" vs "obs")
+    # note: some measures (e.g. NMI, odds ratio) don't work with zeros in (some parts of) the confusion matrix
     
     if (is.null(N))  N <- a + b + c + d
     stopifnot(N == a + b + c + d)
@@ -30,7 +30,7 @@ evaluate <-
       d <- as.numeric(d)
       value <- ((a+d)-(((a+c)*(a+b)+(b+d)*(c+d))/N))/(N-(((a+c)*(a+b)+(b+d)*(c+d))/N))
     } else if(measure == "TSS") { value <- (a*d - b*c) / ((a+c) * (b+d))
-    } else if(measure == "NMI") { value <- 1-((-a*log(a)-b*log(b)-c*log(c)-d*log(d)+(a+b)*log(a+b)+(c+d)*log(c+d))/(N*log(N)-((a+c)*log(a+c)+(b+d)*log(b+d))))  # NMI by Forbes (1995); the "1-" was missing in Fielding & Bell 1997 (and Manel et al 2001) but Fielding confirmed it was a typo
+    } else if(measure == "NMI") { value <- 1-((-a*log(a)-b*log(b)-c*log(c)-d*log(d)+(a+b)*log(a+b)+(c+d)*log(c+d))/(N*log(N)-((a+c)*log(a+c)+(b+d)*log(b+d))))  # NMI by Forbes (1995); the "1-" was missing in Fielding & Bell 1997 (and Manel et al. 2001) but Fielding confirmed it was a typo
     } else if (measure == "F1score") {
       precision <- a/(a+b)
       recall <- a/(a+c)
@@ -44,7 +44,7 @@ evaluate <-
     } else if(measure == "SEDI") {
       H_ <- a / (a + c)
       F_ <- b / (b + d)
-      value <- (log(F_) - log(H_) - log(1 - F_) - log(1 - H_)) / (log(F_) + log(H_) + log(1 + F_) + log(1 + H_))
+      value <- (log(F_) - log(H_) - log(1 - F_) + log(1 - H_)) / (log(F_) + log(H_) + log(1 - F_) + log(1 - H_))
     } else stop("Invalid measure; available options are ",
                 paste(.modEvAmethods("threshMeasures"), collapse = ", "))
     return(value)

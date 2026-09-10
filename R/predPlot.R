@@ -1,4 +1,4 @@
-predPlot <- function(model = NULL, obs = NULL, pred = NULL, thresh = "preval", pbg = FALSE, main = "Classified predicted values", legend.pos = "n", pch = 1, cex = 0.5, col = c("black", "grey"), na.rm = TRUE, rm.dup = FALSE, interval = 0.01, quant = 0, verbosity = 2) {
+predPlot <- function(model = NULL, obs = NULL, pred = NULL, thresh = "preval", pbg = FALSE, main = "Classified predicted values", legend.pos = "n", pch = 1, cex = 0.5, col = c("steelblue4", "lightblue2"), na.rm = TRUE, rm.dup = FALSE, interval = 0.01, quant = 0, verbosity = 2) {
   # version 1.9 (19 Nov 2024)
 
   obspred <- inputMunch(model, obs, pred, na.rm = na.rm, rm.dup = rm.dup, pbg = pbg, verbosity = verbosity)

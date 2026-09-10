@@ -1,4 +1,4 @@
-optiThresh <- function(model = NULL, obs = NULL, pred = NULL, interval = 0.01, measures = c(modEvAmethods("threshMeasures"), modEvAmethods("similarity")), optimize = modEvAmethods("optiThresh"), simplif = FALSE, pbg = FALSE, plot = TRUE, sep.plots = FALSE, reset.par = TRUE, xlab = "Threshold", na.rm = TRUE, rm.dup = FALSE, pch = 20, cex = 0.2, col = "darkblue", verbosity = 2, ...) {
+optiThresh <- function(model = NULL, obs = NULL, pred = NULL, interval = 0.01, measures = c(modEvAmethods("threshMeasures"), modEvAmethods("similarity")), optimize = modEvAmethods("optiThresh"), simplif = FALSE, pbg = FALSE, plot = TRUE, sep.plots = FALSE, reset.par = TRUE, xlab = "Threshold", na.rm = TRUE, rm.dup = FALSE, pch = 20, cex = 0.2, col = "steelblue4", verbosity = 2, ...) {
     # version 3.7 (26 Dec 2024)
 
     wrong.measures <- measures[which(!(measures %in% c(modEvAmethods("threshMeasures"), modEvAmethods("similarity"))))]

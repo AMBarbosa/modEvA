@@ -1,4 +1,4 @@
-optiPair <- function (model = NULL, obs = NULL, pred = NULL, measures = c("Sensitivity", "Specificity"), interval = 0.01, pbg = FALSE, plot = TRUE, plot.sum = FALSE, plot.diff = FALSE, col1 = "darkblue", col2 = "lightblue3", ylim = NULL, na.rm = TRUE, exclude.zeros = TRUE, rm.dup = FALSE, verbosity = 2, ...) {
+optiPair <- function (model = NULL, obs = NULL, pred = NULL, measures = c("Sensitivity", "Specificity"), interval = 0.01, pbg = FALSE, plot = TRUE, plot.sum = FALSE, plot.diff = FALSE, col1 = "steelblue4", col2 = "lightblue3", ylim = NULL, na.rm = TRUE, exclude.zeros = TRUE, rm.dup = FALSE, verbosity = 2, ...) {
   # version 2.4 (26 Dec 2024)
 
   if (length(measures) != 2) stop ("'measures' must contain two elements.")

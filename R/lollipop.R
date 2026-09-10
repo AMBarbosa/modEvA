@@ -1,4 +1,4 @@
-lollipop <- function(x, names = NULL, ymin = 0, ylim = "auto0", sticks = TRUE, col = "royalblue4", grid = TRUE, cex = 1, cex.axis = 1, las = 2, horiz = FALSE, bold = FALSE, ...) {
+lollipop <- function(x, names = NULL, ymin = 0, ylim = "auto0", sticks = TRUE, col = "steelblue4", grid = TRUE, cex = 1, cex.axis = 1, las = 2, horiz = FALSE, bold = FALSE, ...) {
   # version 2.2 (10 Feb 2025)
   
   if (is.matrix(sticks))
