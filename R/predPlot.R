@@ -1,5 +1,5 @@
 predPlot <- function(model = NULL, obs = NULL, pred = NULL, thresh = "preval", pbg = FALSE, main = "Classified predicted values", legend.pos = "n", pch = 1, cex = 0.5, col = c("steelblue4", "lightblue2"), na.rm = TRUE, rm.dup = FALSE, interval = 0.01, quant = 0, verbosity = 2) {
-  # version 1.9 (19 Nov 2024)
+  # version 2.0 (26 Sep 2026)
 
   obspred <- inputMunch(model, obs, pred, na.rm = na.rm, rm.dup = rm.dup, pbg = pbg, verbosity = verbosity)
   if (!is.null(obs) || !is.null(model)) obs <- obspred[ , "obs"]
@@ -30,11 +30,11 @@ predPlot <- function(model = NULL, obs = NULL, pred = NULL, thresh = "preval", p
     abline(v = thresh, lty = 2)
     points(x = pred0, y = sapply(rep(0, length(pred0)), jitter, 10), pch = pch, cex = cex, col = ifelse(pred0 < thresh, col[2], col[1]))
     points(x = pred1, y = sapply(rep(1, length(pred1)), jitter, 10), pch = pch, cex = cex, col = ifelse(pred1 < thresh, col[2], col[1]))
-    if (!is.na(legend.pos) && legend.pos != "n")  legend(legend.pos, legend = c("Predicted presence", "Predicted absence"), pch = pch, col = col)
+    if (!is.na(legend.pos) && legend.pos != "n")  legend(legend.pos, legend = c("Predicted presence", "Predicted absence"), pch = pch, col = col, bg = adjustcolor("white", 0.5))
 
   } else {  # end if thresh_exists
     points(x = pred0, y = sapply(rep(0, length(pred0)), jitter, 10), pch = pch, cex = cex, col = col[1])
     points(x = pred1, y = sapply(rep(1, length(pred1)), jitter, 10), pch = pch, cex = cex, col = col[1])
-    if (!is.na(legend.pos) && legend.pos != "n")  legend(legend.pos, legend = "Prediction", pch = pch, col = col[1])
+    if (!is.na(legend.pos) && legend.pos != "n")  legend(legend.pos, legend = "Prediction", pch = pch, col = col[1], bg = adjustcolor("white", 0.5))
   }  # end if thresh NA or null
 }

@@ -1,5 +1,5 @@
 predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, type = "both", ci = NA, pbg = FALSE, bw = "nrd0", legend.pos = "topright", main = "Density of pred values", na.rm = TRUE, rm.dup = FALSE, xlim = NULL, verbosity = 2, ...) {
-  # version 2.0 (30 Mar 2026)
+  # version 2.1 (26 Sep 2026)
 
   stopifnot(is.null(xlim) || (is.numeric(xlim) && is.finite(xlim) && length(xlim) == 2))
 
@@ -82,7 +82,7 @@ predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, 
       hist(pred0, freq = FALSE, col = "lightblue3", density = 40, angle = 45, add = TRUE, ...)
       rslt[["histogram_obs1"]] <- hist1
       rslt[["histogram_obs0"]] <- hist0
-      if (legend.pos != "n" && type == "histogram") legend(legend.pos, legend = lgd, cex = 0.8, fill = c("lightblue3", "steelblue4"), border = c("lightblue3", "black"), density = c(40, NA), text.col = "plum4", bty = "n")
+      if (legend.pos != "n" && type == "histogram") legend(legend.pos, legend = lgd, cex = 0.8, fill = c("lightblue3", "steelblue4"), border = c("lightblue3", "black"), density = c(40, NA), text.col = "plum4", box.lty = 0, bg = adjustcolor("white", 0.5))
     }
   }
 
@@ -92,8 +92,8 @@ predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, 
     } else {
       lines(dens1, col = "midnightblue", lwd = 2)
       lines(dens0, col = "lightblue3", lty = 5, lwd = 2)
-      if (!is.na(legend.pos) && legend.pos != "n" && type == "density") legend(legend.pos, legend = lgd, cex = 0.8, col = c("lightblue3", "steelblue4"), lty = c(5, 1), text.col = "plum4", bty = "n")
-      if (!is.na(legend.pos) && legend.pos != "n" && type == "both") legend(legend.pos, legend = lgd, cex = 0.8, fill = c("lightblue3", "steelblue4"), border = c("lightblue3", "midnightblue"), lty = c(5, 1), col = c("lightblue3", "midnightblue"), density = c(40, NA), text.col = "plum4", bty = "n")
+      if (!is.na(legend.pos) && legend.pos != "n" && type == "density") legend(legend.pos, legend = lgd, cex = 0.8, col = c("lightblue3", "steelblue4"), lty = c(5, 1), text.col = "plum4", box.lty = 0, bg = adjustcolor("white", 0.5))
+      if (!is.na(legend.pos) && legend.pos != "n" && type == "both") legend(legend.pos, legend = lgd, cex = 0.8, fill = c("lightblue3", "steelblue4"), border = c("lightblue3", "midnightblue"), lty = c(5, 1), col = c("lightblue3", "midnightblue"), density = c(40, NA), text.col = "plum4", box.lty = 0, bg = adjustcolor("white", 0.5))
     }
   }
 
@@ -106,8 +106,8 @@ predDensity <- function(model = NULL, obs = NULL, pred = NULL, separate = TRUE, 
     ci.col <- adjustcolor("darkgreen", alpha.f = 0.3)
     rect(quants[1], 0, quants[2], max(maxs), col = ci.col, border = NA)
     abline(v = mean(pred), lwd = 2, col = "darkgreen")
-    # legend(legend.pos, legend = c("CI", "mean"), lty = c(NA, 1), col = c(NA, "darkgreen"), fill = c(ci.col, NA), border = NA, bty = "n")
-    legend(legend.pos, legend = c("CI", "mean"), pch = c(15, NA), pt.cex = c(2, NA), lty = c(NA, 1), lwd = 2, col = c(ci.col, "darkgreen"), bty = "n")
+    # legend(legend.pos, legend = c("CI", "mean"), lty = c(NA, 1), col = c(NA, "darkgreen"), fill = c(ci.col, NA), border = NA, box.lty = 0)
+    legend(legend.pos, legend = c("CI", "mean"), pch = c(15, NA), pt.cex = c(2, NA), lty = c(NA, 1), lwd = 2, col = c(ci.col, "darkgreen"), box.lty = 0, bg = adjustcolor("white", 0.5))
   }
   
   if (separate) {

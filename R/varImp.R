@@ -1,6 +1,6 @@
 varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, group.cats = FALSE, n.per = 10, data = NULL, n.trees = 100, plot = TRUE, plot.type = "lollipop", error.bars = "sd", ylim = "auto0", col = c("steelblue4", "coral2"), plot.points = TRUE, legend = TRUE, grid = TRUE, verbosity = 2, ...) {
   
-  # version 3.2 (9 Sep 2026)
+  # version 3.3 (26 Sep 2026)
   
   # if 'col' has length 2 and varImp has negative values (e.g. for z-value), those will get the second colour
   
@@ -425,7 +425,7 @@ varImp <- function(model, imp.type = "each", relative = TRUE, reorder = TRUE, gr
     }  # end if plot.points
     
     signs <- unique(sign(varimp)[sign(varimp) != 0])  # check for both negative and positive varimps
-    if (legend && length(signs) > 1) legend("topright", legend = c("positive", "negative"), fill = col, border = NA, bty = "n")
+    if (legend && length(signs) > 1) legend("topright", legend = c("positive", "negative"), fill = col, border = NA, box.lty = 0, bg = adjustcolor("white", 0.5))
   }  # end if plot
   
   if (is.na(error.bars)) return(abs(varimp))

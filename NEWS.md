@@ -6,6 +6,9 @@
 * varImp
     - fix bugs when horiz = TRUE
 
+* predPlot, predDensity, varImp
+    - semi-transparent legend background, in case of overlap
+
 
 # Version 3.46 -> CRAN
 #### (Committed 2026-08-04)
