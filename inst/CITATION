@@ -17,7 +17,7 @@ bibentry(
   doi = "10.1111/ddi.12100",
   url = "https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.12100",
   textVersion =
-    "Barbosa, A.M., Real, R., Munoz, A.R. & Brown, J.A. (2013). New measures for assessing model equilibrium and prediction mismatch in species distribution models. Diversity and Distributions, 19(10), 1333-1338. DOI: 10.1111/ddi.12100."
+    "Barbosa, A.M., Real, R., Munoz, A.R. & Brown, J.A. (2013). New measures for assessing model equilibrium and prediction mismatch in species distribution models. Diversity and Distributions, 19(10), 1333-1338. DOI: 10.1111/ddi.12100"
 )
 
 
@@ -48,11 +48,11 @@ if (nzchar(system.file(package = "modEvA"))) {  # for CRAN checks
     author  = authors,
     year    = substr(meta$Date, 1, 4),
     note    = paste("R package version", meta$Version),
-    url     = meta$URL,
+    doi     = meta$DOI,
     textVersion = paste0(
       author_text, " (", substr(meta$Date, 1, 4), "). ",
       meta$Title, ". R package version ", meta$Version,
-      ". URL: ", meta$URL, "."
+      ". DOI: ", meta$DOI
     )
   )
 }

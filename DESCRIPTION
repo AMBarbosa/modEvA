@@ -1,8 +1,8 @@
 Package: modEvA
 Type: Package
 Title: Model Evaluation and Analysis
-Version: 3.47
-Date: 2026-09-25
+Version: 3.48
+Date: 2026-10-07
 Authors@R: c(person(given = c("A.", "Marcia"),
                       family = "Barbosa",
                       role = c("aut", "cre"),
@@ -47,5 +47,6 @@ Description: Analyses species distribution models and evaluates their performanc
 LazyLoad: yes
 LazyData: yes
 License: GPL-3
-URL: http://modeva.r-forge.r-project.org/
+DOI: 10.32614/CRAN.package.modEvA
+URL: http://modeva.r-forge.r-project.org, https://github.com/AMBarbosa/modEvA
 BugReports: https://github.com/AMBarbosa/modEvA/issues

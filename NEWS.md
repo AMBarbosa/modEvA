@@ -1,3 +1,25 @@
+# Version 3.48
+#### (Committed 2026-10-07)
+
+### Modified functions:
+
+* plotGLM
+    - change plot colours to match other functions
+    
+* multModEv
+    - add plot=FALSE to HLfit() call
+
+
+### Other modified files:
+
+* DESCRIPTION
+    - add package DOI (CRAN)
+    - add GitHub URL besides R-Forge
+
+* CITATION
+    - replace URL with package DOI
+
+
 # Version 3.47 -> CRAN
 #### (Committed 2026-09-25)
 

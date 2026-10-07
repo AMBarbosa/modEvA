@@ -2,7 +2,7 @@ plotGLM <- function(model = NULL, obs = NULL, pred = NULL, link = "logit",
          plot.values = TRUE, plot.digits = 3, xlab = "Logit (Y)",
          ylab = "Predicted probability", main = "Model plot",
          na.rm = TRUE, rm.dup = FALSE, verbosity = 2, ...) {
-  # version 2.2 (6 May 2022)
+  # version 2.3 (25 Sep 2026)
 
   model.provided <- ifelse(is.null(model), FALSE, TRUE)
 
@@ -39,10 +39,10 @@ plotGLM <- function(model = NULL, obs = NULL, pred = NULL, link = "logit",
 
   plot(pred ~ logit, ylim = c(0, 1), type = "n", xlab = xlab, ylab = ylab,
        main = main, ...)
-  points(obs ~ logit, pch = 1, col = "darkgrey")
-  abline(v = 0, lty = 5, col = "grey")  # y of P = 0.5
+  points(obs ~ logit, pch = 1, col = "lightblue3")
+  abline(v = 0, lty = 5, col = "lightblue")  # y of P = 0.5
   #abline(h = pred[which.min(abs(logit))], col = "lightgrey", lty = 2)
-  points(pred ~ logit, pch = 20, cex = 0.6)
+  points(pred ~ logit, col = "steelblue4", pch = 20, cex = 0.6)
 
   if (plot.values) {
     Dsq <- round(Dsquared(model = model, adjust = FALSE), plot.digits)

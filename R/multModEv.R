@@ -1,6 +1,6 @@
 multModEv <-
   function(models = NULL, obs.data = NULL, pred.data = NULL, measures = modEvAmethods("multModEv"), standardize = FALSE, thresh = NULL, bin.method = NULL, verbosity = 0, ...) {
-    # version 2.4 (24 Nov 2024)
+    # version 2.5 (25 Sep 2026)
     
     #  if (Favourability == TRUE & thresh == "preval") {
     #    thresh <- 0.5
@@ -106,7 +106,7 @@ multModEv <-
       
       if (any(measures %in% c("HL", "HL.p"))) {
         for (m in 1:n.models) {
-          HL <- HLfit(obs = obs.data[ , m], pred = pred.data[ , m], bin.method = bin.method, simplif = TRUE, verbosity = verbosity, ...)
+          HL <- HLfit(obs = obs.data[ , m], pred = pred.data[ , m], bin.method = bin.method, simplif = TRUE, plot = FALSE, verbosity = verbosity, ...)
           if ("HL" %in% measures)  results[m, "HL"] <- HL$chi.sq
           if ("HL.p" %in% measures)  results[m, "HL.p"] <- HL$p.value
           if ("RMSE" %in% measures)  results[m, "RMSE"] <- HL$RMSE
